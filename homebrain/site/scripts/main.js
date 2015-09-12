@@ -46,7 +46,7 @@ function capitalize(s) {
 app.controller("BreadcrumbCtrl", function($scope, $location) {
 });
 
-app.controller("AgentListCtrl", function($scope, $resource, $interval) {
+app.controller("AgentListCtrl", function($scope, $resource, $routeParams) {
 });
 
 app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
@@ -71,4 +71,9 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
 });
 
 app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
+    var Agents = $resource("/api/v0/agents");
+    Agents.get("", function(agents){
+        console.log(agents)
+        $scope.agents = agents;
+    })
 });
