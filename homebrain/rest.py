@@ -2,7 +2,7 @@
 
 from flask import Flask, Response, request, json
 
-app = Flask(__name__, static_url_path='', static_folder='./site')
+app = Flask(__name__, static_url_path='', static_folder='site')
 
 #
 #	Static Files
@@ -15,14 +15,14 @@ app = Flask(__name__, static_url_path='', static_folder='./site')
 def index(**_):
 	return app.send_static_file("index.html")
 
-@app.route("/scripts/<file>")
-def scripts(file):
-    return app.send_static_file("scripts/" + file)
+@app.route("/scripts/<filename>")
+def scripts(filename):
+    return app.send_static_file("scripts/" + filename)
 
 
-@app.route("/templates/<file>")
-def templates(file):
-    return app.send_static_file("templates/" + file)
+@app.route("/templates/<filename>")
+def templates(filename):
+    return app.send_static_file("templates/" + filename)
 
 #
 #	REST API

@@ -1,0 +1,3 @@
+import homebrain
+
+homebrain.start()
