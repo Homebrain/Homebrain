@@ -1,10 +1,13 @@
 # Homebrain
 
-Description goes here.
+Control and monitor your home on your own terms.
 
-#### Dependencies
+## Usage
 
-Python modules
+### Installation
 
-- [flask](http://pypi.python.org/pypi/Flask/)
-- [typing](http://pypi.python.org/pypi/typing/)
+Install dependencies with `pip3 install -r requirements.txt`
+
+## Development
+
+There is a [Slack](https://homebrain.slack.com/) for team communication and a [Trello board](https://trello.com/b/qTIPOiPS/homebrain) for planning.

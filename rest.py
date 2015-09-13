@@ -70,5 +70,8 @@ def get_event():
     agents[form["type"]].incoming_post(form["data"])
     return ""
 
-if __name__ == '__main__':
+def start_server():
     app.run(debug=True)
+
+if __name__ == '__main__':
+    start_server()
