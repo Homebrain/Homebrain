@@ -50,9 +50,21 @@ app.controller("AgentListCtrl", function($scope, $resource, $interval) {
 });
 
 app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
+    var Nodes = $resource("/api/v0/nodes");
+    Nodes.get("", function(nodes){
+        console.log(nodes)
+        $scope.nodes = nodes;
+    })
 });
 
 app.controller("NodeCtrl", function($scope, $resource, $routeParams) {
+    var Node = $resource("/api/v0/nodes/"+$routeParams.id);
+
+    console.log($routeParams)
+    Node.get("", function(node){
+        console.log(node)
+        $scope.node = node;
+    })
 });
 
 app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
