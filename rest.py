@@ -57,5 +57,18 @@ def test_endpoint():
                  mimetype="application/json")
     return r
 
+
+class DefaultHandler(object):
+    def incoming_post(self,data):
+        print(request)
+
+agents = {"button": DefaultHandler()}
+
+@app.route("/api/v0/event", methods=["POST"])
+def get_event():
+    form = json.loads(request.json)
+    agents[form["type"]].incoming_post(form["data"])
+    return ""
+
 if __name__ == '__main__':
     app.run(debug=True)
