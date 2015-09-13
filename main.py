@@ -24,3 +24,6 @@ def start():
     mm.start_agents()
 
     rest.start_server()
+
+if __name__ == "__main__":
+    start()

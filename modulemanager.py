@@ -1,8 +1,9 @@
 from datetime import datetime
 import logging
 
-from .base import Agent, Logger, Watcher, Filter
+from base import Agent
 from typing import Set, List, Iterable
+from utils import Singleton
 
 
 @Singleton
@@ -33,23 +34,9 @@ class ModuleManager():
     def _get_by_agent_type(self, agent_type) -> List[Agent]:
         return list(filter(lambda x: x.agent_type == agent_type, self.agents))
 
-    @property
-    def loggers(self) -> List[Logger]:
-        return self._get_by_agent_type("logger")
-
-    @property
-    def filters(self) -> List[Filter]:
-        return self._get_by_agent_type("filter")
-
-    @property
-    def watchers(self) -> List[Watcher]:
-        return self._get_by_agent_type("watcher")
-
     def start_agents(self):
         """Starts loggers first, then filters, then watchers"""
-        self._start_agents(self.loggers)
-        self._start_agents(self.filters)
-        self._start_agents(self.watchers)
+        self._start_agents(self.agents)
 
     """Starts a list of agents after checking for each of them that they haven't already been started"""
     @staticmethod

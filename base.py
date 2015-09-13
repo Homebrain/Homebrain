@@ -5,7 +5,6 @@ Based on a stripped down version of base.py in ActivityWatch.
 """
 
 
-from time import sleep
 from abc import abstractmethod
 import json
 import logging
@@ -93,7 +92,7 @@ class Logger(Agent):
     @abstractmethod
     def wait(self):
         """
-        Usually runs `sleep(10)` or `self.wait_for_messages()`
+        Usually runs `self.wait_for_messages()` or some other wait-condition.
         """
 
     @abstractmethod
