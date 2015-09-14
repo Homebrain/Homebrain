@@ -3,8 +3,10 @@ import logging
 import argparse
 from time import sleep
 
-from . import ModuleManager, rest
+from .dispatcher import Dispatcher
+from .agents.rest_listener.rest_listener import RestListener
 
+from . import AgentManager
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')
@@ -14,16 +16,19 @@ def start():
     loglevel = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(level=loglevel, format="%(asctime)s %(levelname)s from %(threadName)s: %(message)s")
 
-    # Initialize ModuleManager for the first time (it's a singleton)
-    mm = ModuleManager()
+    # Initialize AgentManager for the first time (it's a singleton)
+    am = AgentManager()
 
-    # Add loggers and watchers to ModuleManager
-    mm.add_agents([])
+    # TODO: Integrate this better into the rest of the system
+    d = Dispatcher(am)
+    d.start()
+    RestListener(d).start()
+
+    # Add loggers and watchers to AgentManager
+    am.add_agents([])
 
     # Start Loggers
-    mm.start_agents()
-
-    rest.start_server()
+    am.start_agents()
 
     # Here we need to continue the main thread to prevent execution from terminating
     while True:

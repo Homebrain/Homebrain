@@ -1,6 +1,6 @@
 from . import utils
 
 from .base import Agent
-from .modulemanager import ModuleManager
+from .agentmanager import AgentManager
 
 from .main import start
