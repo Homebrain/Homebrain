@@ -1,20 +1,15 @@
-from modulemanager import ModuleManager
-import rest
+import platform
+import logging
+import argparse
+from time import sleep
 
 from dispatcher import Dispatcher
 from modules.rest_listener.rest_listener import RestListener
 
-def start_dispatcher():
-    d = Dispatcher()
-    d.start()
-    RestListener(d).start()
+from . import ModuleManager, rest
 
 def start():
-    import platform
-    import logging
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Logs your computer activities and much more. Built to be extended.')
+    parser = argparse.ArgumentParser(description='The brain of your home')
     parser.add_argument('--debug', action='store_true', help='Sets loglevel to debug')
     args = parser.parse_args()
 
@@ -24,6 +19,11 @@ def start():
     # Initialize ModuleManager for the first time (it's a singleton)
     mm = ModuleManager()
 
+    # TODO: Integrate this better into the rest of the system
+    d = Dispatcher()
+    d.start()
+    RestListener(d).start()
+
     # Add loggers and watchers to ModuleManager
     mm.add_agents([])
 
@@ -32,6 +32,6 @@ def start():
 
     rest.start_server()
 
-if __name__ == "__main__":
-    start()
-    start_dispatcher()
+    # Here we need to continue the main thread to prevent execution from terminating
+    while True:
+        sleep(1)

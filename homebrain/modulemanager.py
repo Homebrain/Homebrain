@@ -1,9 +1,9 @@
 from datetime import datetime
 import logging
-
-from base import Agent
 from typing import Set, List, Iterable
-from utils import Singleton
+
+from . import Agent
+from .utils import Singleton
 
 
 @Singleton
