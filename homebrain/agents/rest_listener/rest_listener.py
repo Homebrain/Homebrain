@@ -16,7 +16,6 @@ class RestListener(Agent):
         @self.app.route("/<_>/<__>")
         @self.app.route("/<_>/<__>/<___>")
         def index(**_):
-            print(utils.get_pwd() + "/index.html")
             return self.app.send_static_file("index.html")
 
         @self.app.route("/scripts/<filename>")
