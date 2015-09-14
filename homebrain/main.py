@@ -20,7 +20,7 @@ def start():
     am = AgentManager()
 
     # TODO: Integrate this better into the rest of the system
-    d = Dispatcher()
+    d = Dispatcher(am)
     d.start()
     RestListener(d).start()
 

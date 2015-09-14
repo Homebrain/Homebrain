@@ -5,10 +5,13 @@ from typing import Set, List, Iterable
 from . import Agent
 from .utils import Singleton
 
+from collections import defaultdict
+
 
 @Singleton
 class AgentManager():
     _agents = []  # type: Set[Agent]
+    _subscriptions = defaultdict(list)
     _started = None
 
     def __init__(self):
@@ -17,6 +20,9 @@ class AgentManager():
     def add_agent(self, agent: Agent):
         if not isinstance(agent, Agent):
             raise Exception("'{}' is not an agent")
+
+        for sub in agent.subscriptions:
+            self._subscriptions[sub].append(agent)
 
         if agent not in self._agents:
             self._agents.append(agent)
@@ -30,6 +36,9 @@ class AgentManager():
     @property
     def agents(self) -> Set[Agent]:
         return self._agents
+
+    def get_subscribers(self, type):
+        return _subscriptions[type]
 
     def _get_by_agent_type(self, agent_type) -> List[Agent]:
         return list(filter(lambda x: x.agent_type == agent_type, self.agents))
