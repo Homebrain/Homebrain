@@ -67,6 +67,7 @@ setup(
     # simple. Or you can use find_packages().
     packages=find_packages(exclude=["tests"]),
 
+    # Required to bundle the web resources
     include_package_data=True,
     package_data={'': ['*.html', '*.js', '*.css']},
     zip_safe=False,
