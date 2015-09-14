@@ -14,7 +14,6 @@ class Chunker(Agent):
         while True:
             event = self.next_event()
             self.events.append(event)
-            print("n: " + str(len(self.events)))
             if len(self.events) >= self.count:
                 self.dispatcher.post(Event(**{"type":self.target, "data": self.events}))
                 self.events = []

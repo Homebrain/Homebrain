@@ -32,8 +32,10 @@ class Event(dict):
 
 
 class Agent(threading.Thread):
-    _mailbox = Queue()
-    _subscriptions = ["system_shutdown"]
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self._mailbox = Queue()
+        self._subscriptions = ["system_shutdown"]
 
     def post(self, msg):
         self._mailbox.put(msg)
