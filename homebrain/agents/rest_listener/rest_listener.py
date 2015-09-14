@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 from homebrain import Agent
+from homebrain.utils import *
 from flask import Flask, Response, request, json
-
 
 class RestListener(Agent):
 
     def __init__(self, dispatcher):
         super(RestListener, self).__init__()
         self.dispatcher=dispatcher
-        self.app = Flask(__name__, static_url_path='', static_folder='site')
+        self.app = Flask(__name__, static_url_path='', static_folder=get_cwd()+'/site')
 
 
         @self.app.route("/")
@@ -16,6 +16,7 @@ class RestListener(Agent):
         @self.app.route("/<_>/<__>")
         @self.app.route("/<_>/<__>/<___>")
         def index(**_):
+            print(utils.get_pwd() + "/index.html")
             return self.app.send_static_file("index.html")
 
         @self.app.route("/scripts/<filename>")

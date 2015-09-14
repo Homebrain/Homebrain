@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+import homebrain
+import os
 
 class Singleton:
     def __init__(self, cls):
@@ -11,6 +13,8 @@ class Singleton:
             self.instance = self.cls(*args, **kwds)
         return self.instance
 
+def get_cwd():
+    return os.path.dirname(homebrain.__file__)
 
 def modulo_timedelta(dt: datetime, td: timedelta) -> datetime:
     """
