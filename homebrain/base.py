@@ -27,8 +27,7 @@ class Event(dict):
         return self["type"]
 
     def to_json_str(self) -> str:
-        data = self.to_json_dict()
-        return json.dumps(data)
+        return json.dumps(self)
 
 
 class Agent(threading.Thread):

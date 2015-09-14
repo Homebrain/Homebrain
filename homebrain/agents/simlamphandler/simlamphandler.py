@@ -12,4 +12,5 @@ class SimLampHandler(Agent):
     def run(self):
         while True:
             event = self.next_event()
-            requests.request("POST", self.url, json="")
+            outgoing_event=Event(type="toggle_lamp", data={'data': event['data']})
+            requests.request("POST", self.url, json=outgoing_event.to_json_str())

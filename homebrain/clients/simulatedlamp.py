@@ -6,10 +6,11 @@ lamp_state = False
 
 @app.route("/", methods=["POST"])
 def post_event():
-    event = json.loads(request.json)
+    global lamp_state
+    #event = json.loads(request.json)
     lamp_state = not lamp_state
     print("Lamp is {}".format("on" if lamp_state else "off"))
     return ""
 
 if __name__ == '__main__':
-    app.run(port=9090)
+    app.run(debug=True, port=9090)
