@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import homebrain
 import os
 
+
 class Singleton:
     def __init__(self, cls):
         self.cls = cls
@@ -13,7 +14,17 @@ class Singleton:
             self.instance = self.cls(*args, **kwds)
         return self.instance
 
+    def reset_singleton(self):
+        """
+        Detaches the instance from the singleton, causing the creation of
+        a new object when __call__'d.
+        Useful in testing.
+        """
+        self.instance = None
+
+
 def get_cwd():
+    # TODO: Refactor to get_main_directory or something similar
     return os.path.dirname(homebrain.__file__)
 
 def modulo_timedelta(dt: datetime, td: timedelta) -> datetime:
