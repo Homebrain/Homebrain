@@ -4,13 +4,13 @@ from typing import Set, List, Iterable
 from collections import defaultdict
 
 from . import Agent
+from . import Dispatcher
 from .utils import Singleton
 
 
 @Singleton
 class AgentManager():
     _agents = set() # type: set[Agent]
-    _subscriptions = defaultdict(set)
     _started = None
 
     def __init__(self):
@@ -20,8 +20,8 @@ class AgentManager():
         if not isinstance(agent, Agent):
             raise Exception("'{}' is not an agent")
 
-        for sub in agent.subscriptions:
-            self._subscriptions[sub].add(agent)
+        for selector in agent.subscriptions:
+            Dispatcher().bind(agent, selector)
 
         if agent not in self._agents:
             self._agents.add(agent)
@@ -39,16 +39,13 @@ class AgentManager():
     def get_subscribers(self, type):
         return self._subscriptions[type]
 
-    def _get_by_agent_type(self, agent_type) -> List[Agent]:
-        return list(filter(lambda x: x.agent_type == agent_type, self.agents))
-
     def start_agents(self):
-        """Starts loggers first, then filters, then watchers"""
+        """Starts all agents"""
         self._start_agents(self.agents)
 
-    """Starts a list of agents after checking for each of them that they haven't already been started"""
     @staticmethod
     def _start_agents(agents: Iterable[Agent]):
+        """Starts a list of agents after checking for each of them that they haven't already been started"""
         for agent in agents:
             if not agent.is_alive():
                 agent.start()
