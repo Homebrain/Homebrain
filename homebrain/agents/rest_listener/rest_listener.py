@@ -2,12 +2,14 @@
 import threading
 from flask import Flask, Response, request, json
 
+from homebrain.utils import get_cwd
+
 class RestListener(threading.Thread):
 
     def __init__(self, dispatcher):
         super(RestListener, self).__init__()
         self.dispatcher=dispatcher
-        self.app = Flask(__name__, static_url_path='', static_folder=get_cwd()+'/site')
+        self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
 
         @self.app.route("/")
