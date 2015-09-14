@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import threading
-from homebrain.utils import *
 from flask import Flask, Response, request, json
 
 class RestListener(threading.Thread):
@@ -16,7 +15,6 @@ class RestListener(threading.Thread):
         @self.app.route("/<_>/<__>")
         @self.app.route("/<_>/<__>/<___>")
         def index(**_):
-            print(utils.get_pwd() + "/index.html")
             return self.app.send_static_file("index.html")
 
         @self.app.route("/scripts/<filename>")
