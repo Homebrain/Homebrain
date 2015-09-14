@@ -1,5 +1,4 @@
-from util.event_thread import EventThread
-
+from .util.event_thread import EventThread
 
 class Dispatcher(EventThread):
 

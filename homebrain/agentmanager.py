@@ -7,7 +7,7 @@ from .utils import Singleton
 
 
 @Singleton
-class ModuleManager():
+class AgentManager():
     _agents = []  # type: Set[Agent]
     _started = None
 
@@ -21,7 +21,7 @@ class ModuleManager():
         if agent not in self._agents:
             self._agents.append(agent)
         else:
-            logging.warning("Agent '{}' already added to the module manager".format(agent))
+            logging.warning("Agent '{}' already added to the agent manager".format(agent))
 
     def add_agents(self, agents: List[Agent]):
         for agent in agents:
