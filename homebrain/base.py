@@ -8,9 +8,9 @@ Based on a stripped down version of base.py in ActivityWatch.
 from abc import abstractmethod
 import json
 import logging
-
 import threading
 from datetime import datetime, timedelta
+from queue import Queue
 
 from typing import Iterable, List, Set
 
@@ -20,29 +20,22 @@ class Event(dict):
     """
     def __init__(self, **kwargs):
         dict.__init__(self)
-
         self.update(kwargs)
 
-        msg = ""
-        msg += "Logged event '{}':".format(tags)
-        msg += "  Type: {}".format(self["type"])
-        msg += "  Started: {}".format(self["start"])
-        msg += "  Ended: {}".format(self["end"])
-        msg += "  Duration: {}".format(self.duration)
-        if "cmd" in self:
-            msg += "  Command: {}".format(self["cmd"])
-        logging.debug(msg)
+    @property
+    def type(self) -> str:
+        return self["type"]
 
     def to_json_str(self) -> str:
         data = self.to_json_dict()
         return json.dumps(data)
 
-from queue import Queue
+
 class Agent(threading.Thread):
-    _mailbox= Queue()
+    _mailbox = Queue()
     _subscriptions = ["system_shutdown"]
 
-    def post (self, msg):
+    def post(self, msg):
         self._mailbox.put(msg)
 
     def next_event(self):

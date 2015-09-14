@@ -1,17 +1,16 @@
 from datetime import datetime
 import logging
 from typing import Set, List, Iterable
+from collections import defaultdict
 
 from . import Agent
 from .utils import Singleton
 
-from collections import defaultdict
-
 
 @Singleton
 class AgentManager():
-    _agents = []  # type: Set[Agent]
-    _subscriptions = defaultdict(list)
+    _agents = set() # type: set[Agent]
+    _subscriptions = defaultdict(set)
     _started = None
 
     def __init__(self):
@@ -22,10 +21,10 @@ class AgentManager():
             raise Exception("'{}' is not an agent")
 
         for sub in agent.subscriptions:
-            self._subscriptions[sub].append(agent)
+            self._subscriptions[sub].add(agent)
 
         if agent not in self._agents:
-            self._agents.append(agent)
+            self._agents.add(agent)
         else:
             logging.warning("Agent '{}' already added to the agent manager".format(agent))
 

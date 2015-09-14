@@ -44,5 +44,5 @@ def start():
 
 
     # Here we need to continue the main thread to prevent execution from terminating
-    while True:
-        sleep(1)
+    #while True:
+    #    sleep(1)

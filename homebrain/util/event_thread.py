@@ -1,10 +1,11 @@
 import threading
 from queue import Queue
+
 class EventThread(threading.Thread):
 
-    _mailbox= Queue()
+    _mailbox = Queue()
 
-    def post (self, msg):
+    def post(self, msg):
         self._mailbox.put(msg)
 
     def next_event(self):

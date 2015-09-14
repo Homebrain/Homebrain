@@ -1,3 +1,5 @@
+import logging
+
 from .util.event_thread import EventThread
 
 class Dispatcher(EventThread):
@@ -10,6 +12,7 @@ class Dispatcher(EventThread):
             self.process(self.next_event())
 
     def process(self, event):
+        logging.debug(event)
         for subber in self._agentmanager.get_subscribers(event["type"]):
             subber.post(event)
 
