@@ -4,15 +4,13 @@ Control and monitor your home on your own terms.
 
 ## Usage
 
-**NOTE:** This will change in the near future when a setup.py file is created.
-
 ### Installation
 
-Install dependencies with `pip3 install -r requirements.txt`
+Install dependencies with `python3 setup.py install`, if you are going to develop run `python3 setup.py develop` instead.
 
 ### Running it
 
-Run with `python3 homebrain.py`
+Run with `homebrain`
 
 ## Development
 
