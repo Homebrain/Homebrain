@@ -8,7 +8,7 @@ class RestListener(Agent):
     def __init__(self, dispatcher):
         super(RestListener, self).__init__()
         self.dispatcher=dispatcher
-        self.app = Flask(__name__, static_url_path='', static_folder=get_cwd()+'/site')
+        self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
 
         @self.app.route("/")
