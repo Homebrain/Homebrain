@@ -38,7 +38,7 @@ class AgentManager():
         return self._agents
 
     def get_subscribers(self, type):
-        return _subscriptions[type]
+        return self._subscriptions[type]
 
     def _get_by_agent_type(self, agent_type) -> List[Agent]:
         return list(filter(lambda x: x.agent_type == agent_type, self.agents))

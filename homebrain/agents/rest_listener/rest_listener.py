@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-import threading
+from homebrain import Agent
 from flask import Flask, Response, request, json
 
 
-class RestListener(threading.Thread):
+class RestListener(Agent):
 
     def __init__(self, dispatcher):
         super(RestListener, self).__init__()
