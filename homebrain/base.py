@@ -42,8 +42,8 @@ class Agent(threading.Thread):
     def post(self, msg):
         self._mailbox.put(msg)
 
-    def next_event(self):
-        return self._mailbox.get()
+    def next_event(self, timeout=None):
+        return self._mailbox.get() if timeout is None else self._mailbox.get(True, timeout)
 
     @abstractmethod
     def run(self):
