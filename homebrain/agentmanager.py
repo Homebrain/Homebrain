@@ -4,7 +4,6 @@ from typing import Set, List, Iterable
 from collections import defaultdict
 
 from . import Agent
-from . import Dispatcher
 from .utils import Singleton
 
 
@@ -19,9 +18,6 @@ class AgentManager():
     def add_agent(self, agent: Agent):
         if not isinstance(agent, Agent):
             raise Exception("'{}' is not an agent")
-
-        for selector in agent.subscriptions:
-            Dispatcher().bind(agent, selector)
 
         if agent not in self._agents:
             self._agents.add(agent)

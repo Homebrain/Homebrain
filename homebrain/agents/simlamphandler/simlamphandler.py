@@ -3,10 +3,9 @@ import requests
 
 class SimLampHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to the simulated lamp hardware on the given url"""
-    def __init__(self, dispatcher, trigger, url):
+    def __init__(self, url, target=None):
         super(SimLampHandler, self).__init__()
-        self._subscriptions.append(trigger)
-        self.dispatcher = dispatcher
+        self.target = target if target is not None else self.identifier
         self.url = url
 
     def run(self):

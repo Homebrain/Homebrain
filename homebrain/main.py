@@ -12,9 +12,7 @@ def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
     from .agents.chunker.chunker import Chunker
     from .agents.simlamphandler.simlamphandler import SimLampHandler
-    chunker = Chunker(dispatcher, 5, "button", "5_button_presses")
-    lamp = SimLampHandler(dispatcher, "5_button_presses", "http://localhost:9090/")
-    am.add_agents([chunker, lamp])
+    dispatcher.chain("button" , Chunker(5), SimLampHandler("http://localhost:9090/"))
 
 
 def start():
@@ -41,7 +39,6 @@ def start():
 
     # Start Loggers
     am.start_agents()
-
 
     # Here we need to continue the main thread to prevent execution from terminating
     #while True:

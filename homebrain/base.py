@@ -31,20 +31,19 @@ class Event(dict):
 
 
 class Agent(threading.Thread):
+    nrAgents = 1 # Monotonically increasing count of agents created
+
     def __init__(self):
         threading.Thread.__init__(self)
         self._mailbox = Queue()
-        self._subscriptions = ["system_shutdown"]
+        self.id = self.nrAgents
+        self.nrAgents += 1
 
     def post(self, msg):
         self._mailbox.put(msg)
 
     def next_event(self):
         return self._mailbox.get()
-
-    @property
-    def subscriptions(self):
-        return self._subscriptions
 
     @abstractmethod
     def run(self):
@@ -56,4 +55,5 @@ class Agent(threading.Thread):
     @property
     def identifier(self):
         """Identifier for agent, used in settings and as a module name shorter than the class name"""
-        return self.name[0:-len(self.agent_type)].lower()
+        #return self.name[0:-len(self.agent_type)].lower()
+        return "{}[{}]".format(self.__class__.__name__, self.id)

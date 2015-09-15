@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from .util.event_thread import EventThread
 from .utils import Singleton
+from .agentmanager import AgentManager
 
 @Singleton
 class Dispatcher(EventThread):
@@ -25,3 +26,14 @@ class Dispatcher(EventThread):
         agents = self._query_selector(msg["type"])
         for agent in agents:
             agent.post(msg)
+
+    def chain(self, initial_trigger, *args):
+        """Chains together a sequence of agents such that each one listens to the preceding one's event,
+        and outputs an event the following agent will listen to."""
+        trigger = initial_trigger
+        for agent in args:
+            self.bind(agent, trigger)
+            trigger = "{}->{}".format(trigger, agent)
+            agent.target = trigger
+        AgentManager().add_agents(args)
+
