@@ -15,7 +15,7 @@ from .agents.rest_listener.rest_listener import RestListener
 
 def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
-    dispatcher.chain("button" , Chunker(5), ButtonListener(dispatcher))
+    dispatcher.chain("button" , Chunker(5), ButtonListener())
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')
@@ -31,10 +31,10 @@ def start():
     # TODO: Integrate this better into the rest of the system
     d = Dispatcher()
     d.start()
-    RestListener(d).start()
+    RestListener().start()
 
     # Initialize Loggers and Wathcers
-    bl = ButtonListener(d)
+    bl = ButtonListener()
     d.bind(bl, "button")
     lh = LampHandler()
     d.bind(lh, "lamp")

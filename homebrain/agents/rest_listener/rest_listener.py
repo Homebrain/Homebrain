@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from homebrain import Agent
+from homebrain import Agent, Dispatcher
 from homebrain.utils import *
 from flask import Flask, Response, request, json
 
 class RestListener(Agent):
 
-    def __init__(self, dispatcher):
+    def __init__(self):
         super(RestListener, self).__init__()
-        self.dispatcher=dispatcher
+        self.dispatcher=Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
 
