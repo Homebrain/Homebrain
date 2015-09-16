@@ -4,16 +4,18 @@ import argparse
 from time import sleep
 
 from .dispatcher import Dispatcher
-from .agents.rest_listener.rest_listener import RestListener
 
 from . import AgentManager
 
+# Import all agents
+from .agents.chunker.chunker import Chunker
+from .agents.lamphandler.lamphandler import LampHandler
+from .agents.buttonlistener.buttonlistener import ButtonListener
+from .agents.rest_listener.rest_listener import RestListener
+
 def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
-    from .agents.chunker.chunker import Chunker
-    from .agents.simlamphandler.simlamphandler import SimLampHandler
-    dispatcher.chain("button" , Chunker(5), SimLampHandler("http://localhost:9090/"))
-
+    dispatcher.chain("button" , Chunker(5), ButtonListener(dispatcher))
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')
@@ -31,11 +33,17 @@ def start():
     d.start()
     RestListener(d).start()
 
+    # Initialize Loggers and Wathcers
+    bl = ButtonListener(d)
+    d.bind(bl, "button")
+    lh = LampHandler()
+    d.bind(lh, "lamp")
+
     # Add loggers and watchers to AgentManager
-    am.add_agents([])
+    am.add_agents([bl, lh])
 
     # run simulated demo agents
-    run_chunker_example(d, am)
+    #run_chunker_example(d, am)
 
     # Start Loggers
     am.start_agents()
