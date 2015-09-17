@@ -1,6 +1,9 @@
 import platform
 import logging
 import argparse
+import os, sys, inspect
+import importlib
+from homebrain.utils import *
 from time import sleep
 
 from .dispatcher import Dispatcher
@@ -8,16 +11,37 @@ from .dispatcher import Dispatcher
 from . import AgentManager
 
 # Import all agents
-from .agents.chunker.chunker import Chunker
-from .agents.lamphandler.lamphandler import LampHandler
-from .agents.buttonlistener.buttonlistener import ButtonListener
-from .agents.rest_listener.rest_listener import RestListener
-from .agents.websocket.websocket import WebSocket
-from .agents.loglistener.loglistener import LogListener
 
 def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
+    from .agents.chunker.chunker import Chunker
     dispatcher.chain("button" , Chunker(5), ButtonListener())
+
+def load_agent(agentname):
+    agent = None
+    try: # Import module
+        m = importlib.import_module(agentname)
+    except Exception as e:
+        print("Couldn't import agent " + agentname)
+    if m and "agentclass" in dir(m):
+        try: # Initialize Agent
+            agent = m.agentclass()
+        except Exception as e:
+            logging.warning("Couldn't load agent " + agentname)
+            print(e)
+        # Setup bindings
+        if "bindings" in dir(m):
+            print("test")
+            if type(m.bindings) is None:
+                pass
+            elif type(m.bindings) is str:
+                print("bind " + m.bindings + " to " + str(agent))
+                Dispatcher().bind(agent, m.bindings)
+            elif type(m.bindings) is list:
+                for binding in m.bindings:
+                    print("bind " + binding + " to " + str(agent))
+                    Dispatcher().bind(agent, binding)
+    return agent
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')
@@ -33,22 +57,21 @@ def start():
     # TODO: Integrate this better into the rest of the system
     d = Dispatcher()
     d.start()
-    RestListener().start()
 
-    # Initialize Loggers and Wathcers
-    bl = ButtonListener()
-    d.bind(bl, "button")
-    lh = LampHandler()
-    d.bind(lh, "lamp")
-    l = LogListener()
-    d.bind(l, "log")
-    ws = WebSocket()
+    modules = os.listdir(get_cwd()+"/agents/")
+    sys.path.insert(0, get_cwd()+"/agents/")
 
-    # Add loggers and watchers to AgentManager
-    am.add_agents([bl, lh, l, ws])
+    agents = []
+    for module in modules:
+        agent = load_agent(module)
+        if agent:
+            agents.append(agent)
+    logging.info("Loaded " + str(len(agents)) + " agents, starting agents")
 
     # run simulated demo agents
     #run_chunker_example(d, am)
+
+    am.add_agents(agents)
 
     # Start Loggers
     am.start_agents()
