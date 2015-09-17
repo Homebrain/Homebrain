@@ -12,6 +12,7 @@ from .agents.chunker.chunker import Chunker
 from .agents.lamphandler.lamphandler import LampHandler
 from .agents.buttonlistener.buttonlistener import ButtonListener
 from .agents.rest_listener.rest_listener import RestListener
+from .agents.websocket.websocket import WebSocket
 from .agents.loglistener.loglistener import LogListener
 
 def run_chunker_example(dispatcher, am):
@@ -41,9 +42,10 @@ def start():
     d.bind(lh, "lamp")
     l = LogListener()
     d.bind(l, "log")
+    ws = WebSocket()
 
     # Add loggers and watchers to AgentManager
-    am.add_agents([bl, lh, l])
+    am.add_agents([bl, lh, l, ws])
 
     # run simulated demo agents
     #run_chunker_example(d, am)
