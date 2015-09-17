@@ -34,9 +34,9 @@ class Agent(threading.Thread):
     nrAgents = 1 # Monotonically increasing count of agents created
 
     def __init__(self):
-        threading.Thread.__init__(self)
-        self._mailbox = Queue()
         self.id = self.nrAgents
+        threading.Thread.__init__(self, name=self.identifier)
+        self._mailbox = Queue()
         self.nrAgents += 1
 
     def post(self, msg):

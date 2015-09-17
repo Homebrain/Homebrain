@@ -4,7 +4,7 @@ class ButtonListener(Agent):
     def __init__(self, target=None):
         super(ButtonListener, self).__init__()
         self.target = target if target is not None else self.identifier
-        self.dispatcher = Dispatcher
+        self.dispatcher = Dispatcher()
 
     def run(self):
         while True:

@@ -12,6 +12,7 @@ from .agents.chunker.chunker import Chunker
 from .agents.lamphandler.lamphandler import LampHandler
 from .agents.buttonlistener.buttonlistener import ButtonListener
 from .agents.rest_listener.rest_listener import RestListener
+from .agents.loglistener.loglistener import LogListener
 
 def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
@@ -38,9 +39,11 @@ def start():
     d.bind(bl, "button")
     lh = LampHandler()
     d.bind(lh, "lamp")
+    l = LogListener()
+    d.bind(l, "log")
 
     # Add loggers and watchers to AgentManager
-    am.add_agents([bl, lh])
+    am.add_agents([bl, lh, l])
 
     # run simulated demo agents
     #run_chunker_example(d, am)
