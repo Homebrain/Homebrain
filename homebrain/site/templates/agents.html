@@ -1,5 +1,32 @@
 <h2>Agents</h2>
 
-<p>{{agents}}</p>
-
-<img src="https://www.americarisingpac.org/wp-content/uploads/2014/07/barbrady.jpeg">
+<div ng-repeat="agent in agents">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="/nodes/{{agent.name}}">{{agent.name}}</a>
+        </div>
+        <div class="panel-body well-sm">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        Status
+                    </td>
+                    <td>
+                        <div ng-switch on="agent.status">
+                            <div ng-switch-when="True" style="color: green;">
+                                Running
+                            </div>
+                            <div ng-switch-default style="color: red;">
+                                Dead
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>{{agent.id}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from homebrain import Agent, Dispatcher
+from homebrain import AgentManager, Agent, Dispatcher
 from homebrain.utils import *
 from flask import Flask, Response, request, json
 
@@ -10,6 +10,18 @@ class RestListener(Agent):
         self.dispatcher=Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
+        #
+        #    EVENT API
+        #
+        @self.app.route("/api/v0/event", methods=["POST"])
+        def post_event():
+            event = json.loads(request.json)
+            self.dispatcher.post(event)
+            return ""
+
+        #
+        #   HTTP Static Files
+        #
 
         @self.app.route("/")
         @self.app.route("/<_>")
@@ -32,8 +44,8 @@ class RestListener(Agent):
         #
 
         # Static dummy dict
-        nodes = { 'node1': {'name': 'node1', 'status': 'Hopefully online', 'ip': '192.168.1.3'},
-                'node2': {'name': 'node2','status': 'Sadly offline :(', 'ip': '192.168.1.4'}}
+        nodes   = { 'node1': {'name': 'node1', 'status': 'Hopefully online', 'ip': '192.168.1.3'},
+                    'node2': {'name': 'node2', 'status': 'Sadly offline :(', 'ip': '192.168.1.4'}}
 
         @self.app.route("/api/v0/nodes")
         def get_nodes():
@@ -48,8 +60,11 @@ class RestListener(Agent):
 
         @self.app.route("/api/v0/agents")
         def get_agents():
-            agents = { 'agent1': {'status': 'Running'},
-                    'agent2': {'status': 'Stopped'}}
+            agents = {}
+            for agent in AgentManager().agents:
+                agents[agent.identifier]   = { "id": agent.id,
+                                    "name": agent.identifier,
+                                    "status": str(agent.isAlive())}
             return json.dumps(agents)
 
         @self.app.route('/api/v0/test')
@@ -60,15 +75,6 @@ class RestListener(Agent):
                         mimetype="application/json")
             return r
 
-
-        #
-        #    EVENT API
-        #
-        @self.app.route("/api/v0/event", methods=["POST"])
-        def post_event():
-            event = json.loads(request.json)
-            self.dispatcher.post(event)
-            return ""
 
     def run(self):
         self.app.run(debug=False)
