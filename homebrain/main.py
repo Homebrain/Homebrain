@@ -31,15 +31,12 @@ def load_agent(agentname):
             print(e)
         # Setup bindings
         if "bindings" in dir(m):
-            print("test")
             if type(m.bindings) is None:
                 pass
             elif type(m.bindings) is str:
-                print("bind " + m.bindings + " to " + str(agent))
                 Dispatcher().bind(agent, m.bindings)
             elif type(m.bindings) is list:
                 for binding in m.bindings:
-                    print("bind " + binding + " to " + str(agent))
                     Dispatcher().bind(agent, binding)
     return agent
 
