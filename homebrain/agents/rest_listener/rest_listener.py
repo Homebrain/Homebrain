@@ -15,7 +15,11 @@ class RestListener(Agent):
         #
         @self.app.route("/api/v0/event", methods=["POST"])
         def post_event():
-            event = json.loads(request.json)
+            msg = request.json
+            if type(msg) is str:
+                event = json.loads(msg)
+            else:
+            	event = msg
             self.dispatcher.post(event)
             return ""
 
@@ -77,4 +81,4 @@ class RestListener(Agent):
 
 
     def run(self):
-        self.app.run(debug=False)
+        self.app.run(host='0.0.0.0', debug=False)
