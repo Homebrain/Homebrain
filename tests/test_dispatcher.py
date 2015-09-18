@@ -7,7 +7,6 @@ from homebrain import Agent, AgentManager, Dispatcher, Event
 class MockAgent(Agent):
     def __init__(self):
         Agent.__init__(self)
-        self.subscriptions.append("test")
         self.event_received = threading.Event()
 
     def create_event(self):
@@ -27,7 +26,9 @@ class DispatcherTest(unittest.TestCase):
 
     def test_subscription(self):
         agent = MockAgent()
+        agent.daemon = True
         self.am.add_agent(agent)
+        self.dispatcher.bind(agent, "test")
 
         agent.create_event()
         agent.start()
