@@ -2,7 +2,7 @@
 
 Control and monitor your home on your own terms.
 
-![Codeship badge](https://codeship.com/projects/95112e30-60ec-0132-76d7-02eb9615503b/status?branch=master)
+[ ![Codeship Status for ErikBjare/Homebrain](https://codeship.com/projects/95112e30-60ec-0132-76d7-02eb9615503b/status?branch=master)](https://codeship.com/projects/51704)
 
 
 ## Usage
