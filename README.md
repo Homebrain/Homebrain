@@ -8,7 +8,7 @@ Control and monitor your home on your own terms.
 
 ### Installation
 
-Install dependencies with `python3 setup.py install`, if you are going to develop run `python3 setup.py develop` instead.
+Install dependencies with `python3 setup.py install`, if you are going to develop run `python3 setup.py develop` instead ([Why?](http://stackoverflow.com/questions/19048732/python-setup-py-develop-vs-install)).
 
 ### Running it
 
