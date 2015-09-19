@@ -35,6 +35,9 @@ def start():
 
     # run simulated demo agents
     #run_chunker_example(d, am)
+    from .agents.idfilter.IDFilter import IDFilter
+    from .agents.lamphandler.lamphandler import LampHandler
+    d.chain("button", IDFilter("lightbtn1"), LampHandler("http://127.0.0.1:9090"))
 
     am.add_agents(agents)
 
