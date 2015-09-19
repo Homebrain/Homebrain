@@ -1,2 +1,2 @@
 # Import the agent class
-from . import TTSHandler
+from .ttshandler import TTSHandler

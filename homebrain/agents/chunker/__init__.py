@@ -1,2 +1,2 @@
 # Import the agent class
-from . import Chunker
+from .chunker import Chunker
