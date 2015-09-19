@@ -8,8 +8,8 @@ from .utils import Singleton
 
 
 @Singleton
-class AgentManager():
-    _agents = set() # type: set[Agent]
+class AgentManager:
+    _agents = set()  # type: set[Agent]
     _started = None
 
     def __init__(self):
@@ -32,8 +32,8 @@ class AgentManager():
     def agents(self) -> Set[Agent]:
         return self._agents
 
-    def get_subscribers(self, type):
-        return self._subscriptions[type]
+    def get_subscribers(self, agent_type: str):
+        return self._subscriptions[agent_type]
 
     def start_agents(self):
         """Starts all agents"""
@@ -49,6 +49,7 @@ class AgentManager():
     def stop_agents(self):
         self._stop_agents(self.loggers)
 
+    @staticmethod
     def _stop_agents(agents: Iterable[Agent]):
         for agent in agents:
             if agent.is_alive():

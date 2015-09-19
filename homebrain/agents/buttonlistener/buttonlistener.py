@@ -1,5 +1,6 @@
 from homebrain import Agent, Event, Dispatcher
 
+
 class ButtonListener(Agent):
     def __init__(self, target=None):
         super(ButtonListener, self).__init__()

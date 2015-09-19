@@ -4,22 +4,21 @@ Contains some base primitives that provide basic flow logic for the messages.
 Based on a stripped down version of base.py in ActivityWatch.
 """
 
-
 from abc import abstractmethod
 import json
 import logging
 import threading
-from datetime import datetime, timedelta
 from queue import Queue
 
-from typing import Iterable, List, Set
+from typing import Optional
+
 
 class Event(dict):
     """
     Used to represents an message.
     """
     def __init__(self, **kwargs):
-        dict.__init__(self)
+        super(Event, self).__init__()
         self.update(kwargs)
 
     @property
@@ -31,7 +30,7 @@ class Event(dict):
 
 
 class Agent(threading.Thread):
-    nrAgents = 1 # Monotonically increasing count of agents created
+    nrAgents = 1  # Monotonically increasing count of agents created
 
     def __init__(self):
         self.id = self.nrAgents
@@ -42,7 +41,7 @@ class Agent(threading.Thread):
     def post(self, msg):
         self._mailbox.put(msg)
 
-    def next_event(self, timeout=None):
+    def next_event(self, timeout=None) -> Optional[Event]:
         return self._mailbox.get() if timeout is None else self._mailbox.get(True, timeout)
 
     @abstractmethod
@@ -50,10 +49,10 @@ class Agent(threading.Thread):
         pass
 
     def stop(self):
-        raise NotImplementedError
+        # TODO: Set @abstractmethod later
+        pass
 
     @property
-    def identifier(self):
+    def identifier(self) -> str:
         """Identifier for agent, used in settings and as a module name shorter than the class name"""
-        #return self.name[0:-len(self.agent_type)].lower()
         return "{}[{}]".format(self.__class__.__name__, self.id)

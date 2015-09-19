@@ -5,6 +5,7 @@ from .utils import Singleton
 from .agentmanager import AgentManager
 from .base import Agent
 
+
 @Singleton
 class Dispatcher(Agent):
     def __init__(self):

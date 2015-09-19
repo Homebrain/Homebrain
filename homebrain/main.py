@@ -1,7 +1,6 @@
 import platform
 import logging
 import argparse
-from homebrain.utils import *
 from time import sleep
 import traceback
 
@@ -9,12 +8,12 @@ from .dispatcher import Dispatcher
 from .moduleloader import *
 from . import AgentManager
 
-# Import all agents
 
 def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
     from .agents.chunker.chunker import Chunker
     dispatcher.chain("button" , Chunker(5), ButtonListener())
+
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')

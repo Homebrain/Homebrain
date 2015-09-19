@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Any
 
 import homebrain
 import os
@@ -9,7 +10,7 @@ class Singleton:
         self.cls = cls
         self.instance = None
 
-    def __call__(self, *args, **kwds):
+    def __call__(self, *args, **kwds) -> Any:
         if self.instance is None:
             self.instance = self.cls(*args, **kwds)
         return self.instance
@@ -26,6 +27,7 @@ class Singleton:
 def get_cwd():
     # TODO: Refactor to get_main_directory or something similar
     return os.path.dirname(homebrain.__file__)
+
 
 def modulo_timedelta(dt: datetime, td: timedelta) -> datetime:
     """

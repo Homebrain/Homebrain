@@ -1,6 +1,10 @@
-import os, sys
+import os
+import sys
 import importlib
-from homebrain.utils import *
+import logging
+import traceback
+from homebrain.utils import get_cwd
+
 
 def load_all_modules():
     modules = os.listdir(get_cwd()+"/agents/")
@@ -12,18 +16,19 @@ def load_all_modules():
             agents.append(agent)
     return agents
 
-def load_module(agentname):
+
+def load_module(agent_name: str):
     agent = None
     m = None
-    try: # Import module
-        m = importlib.import_module(agentname)
+    try:  # Import module
+        m = importlib.import_module(agent_name)
     except Exception as e:
-        logging.error("Couldn't import agent " + agentname +
+        logging.error("Couldn't import agent " + agent_name +
                       "\n" + traceback.format_exc())
     if m and "agentclass" in dir(m):
-        try: # Initialize Agent
+        try:  # Initialize Agent
             agent = m.agentclass()
         except Exception as e:
-            logging.error("Couldn't load agent " + agentname +
+            logging.error("Couldn't load agent " + agent_name +
                           "\n" + traceback.format_exc())
     return agent
