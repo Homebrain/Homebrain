@@ -5,6 +5,7 @@ import os, sys, inspect
 import importlib
 from homebrain.utils import *
 from time import sleep
+import traceback
 
 from .dispatcher import Dispatcher
 
@@ -19,16 +20,18 @@ def run_chunker_example(dispatcher, am):
 
 def load_agent(agentname):
     agent = None
+    m = None
     try: # Import module
         m = importlib.import_module(agentname)
     except Exception as e:
-        print("Couldn't import agent " + agentname)
+        logging.error("Couldn't import agent " + agentname +
+                      "\n" + traceback.format_exc())
     if m and "agentclass" in dir(m):
         try: # Initialize Agent
             agent = m.agentclass()
         except Exception as e:
-            logging.warning("Couldn't load agent " + agentname)
-            print(e)
+            logging.error("Couldn't load agent " + agentname +
+                          "\n" + traceback.format_exc())
         # Setup bindings
         if "bindings" in dir(m):
             if type(m.bindings) is None:
