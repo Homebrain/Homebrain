@@ -9,5 +9,9 @@ class ButtonListener(Agent):
     def run(self):
         while True:
             event = self.next_event()
+            msgtype = "lamp"
             data = {'data': {'action': "toggle"}}
-            self.dispatcher.post(Event(type="lamp", data=data))
+            self.dispatcher.post(Event(type=msgtype, data=data))
+            msgtype = "tts"
+            data = {'msg': 'Button pressed'}
+            self.dispatcher.post(Event(type=msgtype, data=data))
