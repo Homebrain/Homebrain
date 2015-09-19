@@ -1,14 +1,14 @@
 import logging
 from collections import defaultdict
 
-from .util.event_thread import EventThread
 from .utils import Singleton
 from .agentmanager import AgentManager
+from .base import Agent
 
 @Singleton
-class Dispatcher(EventThread):
+class Dispatcher(Agent):
     def __init__(self):
-        EventThread.__init__(self)
+        Agent.__init__(self)
         self._bindings = defaultdict(set)
 
     def run(self):
@@ -36,4 +36,3 @@ class Dispatcher(EventThread):
             trigger = "{}->{}".format(trigger, agent)
             agent.target = trigger
         AgentManager().add_agents(args)
-
