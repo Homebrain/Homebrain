@@ -7,10 +7,12 @@ app = Flask(__name__)
 
 lamp_state = False
 
+
 def log(msg):
     jsn = json.dumps({"type": "log",
-        "data":{"level":"info", "msg": msg}})
+                      "data": {"level": "info", "msg": msg}})
     requests.request("POST", "http://127.0.0.1:5000/api/v0/event", json=jsn)
+
 
 @app.route("/", methods=["POST"])
 def post_event():

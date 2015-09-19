@@ -6,7 +6,7 @@ class TemplateAgent(Agent):
         self.target = target if target is not None else self.identifier
         Dispatcher().bind(self, "exampletype1")
 
-    def run():
+    def run(self):
         while True:
             event = self.next_event()
             # Handle incoming events
