@@ -1,14 +1,12 @@
 import platform
 import logging
 import argparse
-import os, sys, inspect
-import importlib
 from homebrain.utils import *
 from time import sleep
 import traceback
 
 from .dispatcher import Dispatcher
-
+from .moduleloader import *
 from . import AgentManager
 
 # Import all agents
@@ -17,31 +15,6 @@ def run_chunker_example(dispatcher, am):
     """Needs the simulated lamp to be running in a different process, and expects the simulated button to fire."""
     from .agents.chunker.chunker import Chunker
     dispatcher.chain("button" , Chunker(5), ButtonListener())
-
-def load_agent(agentname):
-    agent = None
-    m = None
-    try: # Import module
-        m = importlib.import_module(agentname)
-    except Exception as e:
-        logging.error("Couldn't import agent " + agentname +
-                      "\n" + traceback.format_exc())
-    if m and "agentclass" in dir(m):
-        try: # Initialize Agent
-            agent = m.agentclass()
-        except Exception as e:
-            logging.error("Couldn't load agent " + agentname +
-                          "\n" + traceback.format_exc())
-        # Setup bindings
-        if "bindings" in dir(m):
-            if type(m.bindings) is None:
-                pass
-            elif type(m.bindings) is str:
-                Dispatcher().bind(agent, m.bindings)
-            elif type(m.bindings) is list:
-                for binding in m.bindings:
-                    Dispatcher().bind(agent, binding)
-    return agent
 
 def start():
     parser = argparse.ArgumentParser(description='The brain of your home')
@@ -58,14 +31,7 @@ def start():
     d = Dispatcher()
     d.start()
 
-    modules = os.listdir(get_cwd()+"/agents/")
-    sys.path.insert(0, get_cwd()+"/agents/")
-
-    agents = []
-    for module in modules:
-        agent = load_agent(module)
-        if agent:
-            agents.append(agent)
+    agents = load_all_modules()
     logging.info("Loaded " + str(len(agents)) + " agents, starting agents")
 
     # run simulated demo agents
