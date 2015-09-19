@@ -8,11 +8,11 @@ class TTSClient:
 
 class TTSHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
-    def __init__(self, target=None):
+    def __init__(self, host , target=None):
         super(TTSHandler, self).__init__()
         self.target = target if target is not None else self.identifier
         self.clients = []
-        self.add_client("http://localhost:9092/", "Local TTS client")
+        self.add_client(host, "Local TTS client")
 
     def add_client(self, url, name=None):
         if name == None:
