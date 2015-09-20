@@ -8,10 +8,8 @@ from .utils import Singleton
 
 @Singleton
 class AgentManager:
-    _agents = set()  # type: set[Agent]
-    _started = None
-
     def __init__(self):
+        self._agents = set()  # type: set[Agent]
         self._started = datetime.now()
 
     def add_agent(self, agent: Agent):
