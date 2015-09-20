@@ -3,3 +3,4 @@
 
 # Agent class to start
 # agentclass = TemplateAgent
+# autostart = False

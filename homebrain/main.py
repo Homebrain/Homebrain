@@ -4,8 +4,8 @@ import argparse
 from time import sleep
 import traceback
 
+from .moduleloader import import_all_modules
 from .dispatcher import Dispatcher
-from .moduleloader import *
 from . import AgentManager
 
 
@@ -30,20 +30,25 @@ def start():
     d = Dispatcher()
     d.start()
 
-    agents = load_all_modules()
-    logging.info("Loaded " + str(len(agents)) + " agents, starting agents")
+    # Import modules
+    autostartagents = import_all_modules()
+    # Add autostart agents
+    am.add_agents(autostartagents)
 
     # run simulated demo agents
     #run_chunker_example(d, am)
+
+    # Button with IDFilter example
     from .agents.idfilter.IDFilter import IDFilter
     from .agents.lamphandler.lamphandler import LampHandler
-    d.chain("button", IDFilter("lightbtn1"), LampHandler("http://127.0.0.1:9090"))
-
-    am.add_agents(agents)
+    from .agents.ttshandler.ttshandler import TTSHandler
+    # Initialize local clients
+    locallamp = LampHandler("http://127.0.0.1:9090")
+    localtts  = TTSHandler ("http://127.0.0.1:9092")
+    # Toggle local light with "lightbin1"
+    d.chain("button", IDFilter("lightbtn1"), locallamp)
+    # Toggle local TTS with "ttsbtn1"
+    d.chain("button", IDFilter("ttsbtn1"), localtts)
 
     # Start Loggers
     am.start_agents()
-
-    # Here we need to continue the main thread to prevent execution from terminating
-    #while True:
-    #    sleep(1)

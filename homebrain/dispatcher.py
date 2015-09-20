@@ -35,6 +35,6 @@ class Dispatcher(Agent):
         trigger = initial_trigger
         for agent in args:
             self.bind(agent, trigger)
-            trigger = "{}->{}".format(trigger, agent)
+            trigger = "{}->{}".format(trigger, agent.identifier)
             agent.target = trigger
         AgentManager().add_agents(args)

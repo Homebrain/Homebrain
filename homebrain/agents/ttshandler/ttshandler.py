@@ -8,11 +8,11 @@ class TTSClient:
 
 class TTSHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
-    def __init__(self, host , target=None):
+    def __init__(self, host, target=None):
         super(TTSHandler, self).__init__()
         self.target = target if target is not None else self.identifier
         self.clients = []
-        self.add_client(host, "Local TTS client")
+        self.host = host
 
     def add_client(self, url, name=None):
         if name == None:
@@ -22,6 +22,5 @@ class TTSHandler(Agent):
     def run(self):
         while True:
             event = self.next_event()
-            #outgoing_event=Event(type="tts", data={'action': 'toggle'})
-            for client in self.clients: # Toggle all lamps
-                requests.request("POST", client.url, json=event.to_json_str())
+            outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
+            requests.request("POST", self.host, json=outgoing_event.to_json_str())
