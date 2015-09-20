@@ -26,7 +26,6 @@ class DispatcherTest(unittest.TestCase):
 
     def test_subscription(self):
         agent = MockAgent()
-        agent.daemon = True
         self.am.add_agent(agent)
         self.dispatcher.bind(agent, "test")
 

@@ -37,6 +37,7 @@ class Agent(threading.Thread):
         threading.Thread.__init__(self, name=self.identifier)
         self._mailbox = Queue()
         self.nrAgents += 1
+        self.daemon = True
 
     def post(self, msg):
         self._mailbox.put(msg)

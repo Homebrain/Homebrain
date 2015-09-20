@@ -11,6 +11,7 @@ class Dispatcher(Agent):
     def __init__(self):
         Agent.__init__(self)
         self._bindings = defaultdict(set)
+        self.daemon = False
 
     def run(self):
         while True:
