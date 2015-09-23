@@ -19,8 +19,8 @@ class TTSHandler(Agent):
             name = "Unnamed Lamp"
         self.clients.append(TTSClient(name, url))
 
-    def run(self):
-        while True:
-            event = self.next_event()
-            outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
-            requests.request("POST", self.host, json=outgoing_event.to_json_str())
+    @Agent.stop_on_shutdown_event
+    @Agent.log_exceptions
+    def handle_event(self, event):
+        outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
+        requests.request("POST", self.host, json=outgoing_event.to_json_str())

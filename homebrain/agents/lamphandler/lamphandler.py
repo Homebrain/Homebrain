@@ -1,13 +1,16 @@
 from homebrain import Agent, Event
 import requests
 
+
 class Lamp:
     def __init__(self, name, url):
         self.name = name
         self.url = url
 
+
 class LampHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
+
     def __init__(self, target=None):
         super(LampHandler, self).__init__()
         self.target = target if target is not None else self.identifier
@@ -19,9 +22,8 @@ class LampHandler(Agent):
             name = "Unnamed Lamp"
         self.lamps.append(Lamp(name, url))
 
-    def run(self):
-        while True:
-            event = self.next_event()
-            outgoing_event=Event(type="lamp", data={'action': 'toggle'})
-            for lamp in self.lamps: # Toggle all lamps
-                requests.request("POST", lamp.url, json=outgoing_event.to_json_str())
+    def handle_event(self, event):
+        outgoing_event = Event(type="lamp", data={'action': 'toggle'})
+        for lamp in self.lamps:  # Toggle all lamps
+            requests.request("POST", lamp.url,
+                             json=outgoing_event.to_json_str())
