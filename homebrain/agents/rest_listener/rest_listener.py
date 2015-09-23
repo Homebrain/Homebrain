@@ -82,3 +82,10 @@ class RestListener(Agent):
 
     def run(self):
         self.app.run(host='0.0.0.0', debug=False)
+
+    def stop(self):
+        from flask import request
+        func = request.environ.get('werkzeug.server.shutdown')
+        if func is None:
+            raise RuntimeError('Not running with the Werkzeug Server')
+        func()
