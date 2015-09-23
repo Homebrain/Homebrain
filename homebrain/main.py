@@ -39,7 +39,7 @@ def start():
     #run_chunker_example(d, am)
 
     # Button with IDFilter example
-    from .agents.idfilter.IDFilter import IDFilter
+    from .agents.idfilter.idfilter import IDFilter
     from .agents.lamphandler.lamphandler import LampHandler
     from .agents.ttshandler.ttshandler import TTSHandler
     # Initialize local clients

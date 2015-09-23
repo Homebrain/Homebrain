@@ -4,7 +4,8 @@ import time
 
 from homebrain import Agent, AgentManager, Dispatcher, Event
 from homebrain.agents.chunker.chunker import Chunker
-from homebrain.agents.lamphandler.lamphandler import LampHandler
+from homebrain.agents.idfilter.idfilter import IDFilter
+#from homebrain.agents.lamphandler.lamphandler import LampHandler
 
 from queue import Queue, Empty
 
@@ -29,10 +30,12 @@ class IntegrationTest(unittest.TestCase):
         Dispatcher().start()
         self.output_agent = MockOutputter()
         Dispatcher().chain("button" , Chunker(3), self.output_agent)
+        Dispatcher().chain("button", IDFilter("idtest"), self.output_agent)
         AgentManager().start_agents()
         time.sleep(0.1)
 
     def test_chain(self):
+        # Test Chunker
         self.assertEquals([],self.output_agent.events)
         Dispatcher().post(Event(type="button", data={}))
         self.assertEquals([],self.output_agent.events)
@@ -41,9 +44,15 @@ class IntegrationTest(unittest.TestCase):
         time.sleep(0.1)
         self.assertEqual(1, len(self.output_agent.events))
 
+        # Test IDFilter
+        Dispatcher().post(Event(type="button", id="", data={}))
+        time.sleep(0.1)
+        self.assertEqual(1, len(self.output_agent.events))
+        Dispatcher().post(Event(type="button", id="idtest", data={}))
+        time.sleep(0.1)
+        self.assertEqual(2, len(self.output_agent.events))
+
     def tearDown(self):
         AgentManager.reset_singleton()
         Dispatcher.reset_singleton()
         self.output_agent.stop()
-
-

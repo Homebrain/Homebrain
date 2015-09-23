@@ -1,4 +1,4 @@
-from . import IDFilter
+from .idfilter import IDFilter
 
 agentclass = IDFilter
 autostart = False
