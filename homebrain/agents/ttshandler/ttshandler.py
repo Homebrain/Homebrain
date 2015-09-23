@@ -1,4 +1,4 @@
-from homebrain import ConveyorAgent, Event
+from homebrain import Agent, Event
 import requests
 
 class TTSClient:
@@ -6,7 +6,7 @@ class TTSClient:
         self.name = name
         self.url = url
 
-class TTSHandler(ConveyorAgent):
+class TTSHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
     def __init__(self, host, target=None):
         super(TTSHandler, self).__init__()
@@ -19,8 +19,8 @@ class TTSHandler(ConveyorAgent):
             name = "Unnamed Lamp"
         self.clients.append(TTSClient(name, url))
 
-    @ConveyorAgent.stop_on_shutdown_event
-    @ConveyorAgent.log_exceptions
+    @Agent.stop_on_shutdown_event
+    @Agent.log_exceptions
     def handle_event(self, event):
         outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
         requests.request("POST", self.host, json=outgoing_event.to_json_str())

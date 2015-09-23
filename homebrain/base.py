@@ -37,12 +37,14 @@ class Agent(threading.Thread):
     """
     nrAgents = 1  # Monotonically increasing count of agents created
 
-    def __init__(self):
+    def __init__(self, event_timeout=0.2):
         self.id = self.nrAgents
         threading.Thread.__init__(self, name=self.identifier)
         self._mailbox = Queue()
         self.nrAgents += 1
         self.daemon = True
+        self.timeout = event_timeout
+        self.running = True
 
     def post(self, msg):
         self._mailbox.put(msg)
@@ -51,29 +53,10 @@ class Agent(threading.Thread):
         return self._mailbox.get() if timeout is None else self._mailbox.get(
             True, timeout)
 
-    @abstractmethod
-    def run(self):
-        pass
-
-    def stop(self):
-        # TODO: Set @abstractmethod later
-        pass
-
     @property
     def identifier(self) -> str:
         """Identifier for agent, used in settings and as a module name shorter than the class name"""
         return "{}[{}]".format(self.__class__.__name__, self.id)
-
-
-class ConveyorAgent(Agent):
-    """
-    Agent that follows a simple "Conveyor Belt" (i.e. while True: handle next event) structure.
-    """
-
-    def __init__(self, event_timeout=0.2):
-        super(ConveyorAgent, self).__init__()
-        self.timeout = event_timeout
-        self.running = True
 
     def run(self):
         try:

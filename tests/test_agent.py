@@ -1,4 +1,4 @@
-from homebrain import ConveyorAgent, Event, Dispatcher
+from homebrain import Agent, Event, Dispatcher
 from homebrain import Agent, AgentManager, Dispatcher, Event
 import unittest
 import threading
@@ -7,13 +7,12 @@ import time
 WAIT_TIME = 0.02  # time to sleep while waiting for a thread to react
 
 
-class MockConveyor(ConveyorAgent):
+class MockAgent(Agent):
     def __init__(self):
-        super(MockConveyor, self).__init__()
+        super(MockAgent, self).__init__()
         self.events = []
 
-    @ConveyorAgent.stop_on_shutdown_event
-    @ConveyorAgent.log_events
+    @Agent.stop_on_shutdown_event
     def handle_event(self, event):
         self.events.append(event)
 
@@ -21,9 +20,9 @@ class MockConveyor(ConveyorAgent):
         pass
 
 
-class ConveyorAgentTest(unittest.TestCase):
+class AgentTest(unittest.TestCase):
     def setUp(self):
-        self.mock_agent = MockConveyor()
+        self.mock_agent = MockAgent()
         self.mock_agent.start()
         time.sleep(WAIT_TIME)
 

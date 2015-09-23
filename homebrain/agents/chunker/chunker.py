@@ -1,7 +1,7 @@
-from homebrain import ConveyorAgent, Event, Dispatcher
+from homebrain import Agent, Event, Dispatcher
 
 
-class Chunker(ConveyorAgent):
+class Chunker(Agent):
     """
     Listens to a certain trigger event, and emits a target event once the specified count has been reached.
     """
@@ -12,9 +12,9 @@ class Chunker(ConveyorAgent):
         self.count = count
         self.events = []
 
-    @ConveyorAgent.stop_on_shutdown_event
-    @ConveyorAgent.log_events
-    @ConveyorAgent.log_exceptions
+    @Agent.stop_on_shutdown_event
+    @Agent.log_events
+    @Agent.log_exceptions
     def handle_event(self, event):
         self.events.append(event)
         if len(self.events) >= self.count:
