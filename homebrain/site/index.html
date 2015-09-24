@@ -10,6 +10,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
     <script src="/scripts/main.js"></script>
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/websocket.js"></script>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -58,6 +60,17 @@
                         Add data here
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="panel panel-default" style="width: 40%; position: fixed; right: 0%; bottom: 0; margin: 0;">
+            <div onclick="toggleHidden('logbody');" class="panel-heading">
+                    Log
+            </div>
+            <div id="logbody" class="panel-body" style="display: none; overflow-y: scroll; max-height: 200px;">
+                <table id ="logtable" class="table table-bordered">
+                </table>
             </div>
         </div>
     </div>
