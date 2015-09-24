@@ -36,7 +36,24 @@ app.controller("MainCtrl", function($scope, $route, $routeParams, $location) {
     $scope.$location = $location;
 });
 
-app.controller("HomeCtrl", function($scope) {
+app.controller("HomeCtrl", function($scope, $resource) {
+    var Agents = $resource("/api/v0/agents");
+    Agents.get("", function(agents){
+        $scope.agents = agents;
+        $scope.agentsenabled = Object.keys($scope.agents).length-2;
+        // Get running agents count
+        var c = 0
+        for (node in $scope.agents) {
+            if ($scope.agents[node].status == "True")
+                c++;
+        }
+        $scope.agentsrunning = c;
+    });
+    var Nodes = $resource("/api/v0/nodes");
+    Nodes.get("", function(nodes){
+        $scope.nodes = nodes;
+        $scope.nodec = Object.keys($scope.nodes).length-2;
+    });
 });
 
 function capitalize(s) {
