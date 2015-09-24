@@ -60,12 +60,12 @@ class Agent(threading.Thread):
 
     def run(self):
         try:
-            try:
-                while self.running:
+            while self.running:
+                try:
                     event = self.next_event(timeout=self.timeout)
                     self.handle_event(event)
-            except Empty as e:
-                pass
+                except Empty as e:
+                    pass
         finally:
             self.cleanup()
 
