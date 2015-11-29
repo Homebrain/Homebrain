@@ -10,17 +10,35 @@ class WebSocket(Agent):
         super(WebSocket, self).__init__()
         self.server = WebsocketServer(9091)
         self.wsThread = threading.Thread(target=self.server.run_forever)
-        self.server.set_fn_new_client(self.new_client)
-        self.server.set_fn_client_left(self.client_left)
-        self.server.set_fn_message_received(self.message_received)
         self.clients = self.server.clients
         self.subscriptions = []
 
+        @self.server.set_fn_new_client
+        def new_client(client, server):
+            client["subscriptions"] = []
+
+        @self.server.set_fn_client_left
+        def client_left(client, server):
+            print("Client(%d) disconnected" % client['id'])
+
+        @self.server.set_fn_message_received
+        def message_received(client, server, msg):
+            # print("Client{}: {}".format(client['id'], msg))
+            event = json.loads(msg)
+            event_type = event["type"]
+            event_data = event["data"]
+            if event_type == "subscribe":
+                self._subscribe(client, event_data)
+            elif event_type == "unsubscribe":
+                self._unsubscribe(client, msg)
+            else:
+                Dispatcher().post(Event(type=event_type, data=event_data))
+
     def run(self):
         self.wsThread.start()
-        self.listener()
+        self._listener()
 
-    def listener(self):
+    def _listener(self):
         while self.wsThread.isAlive():
             event = self.next_event()
             event_type = event["type"]
@@ -28,24 +46,6 @@ class WebSocket(Agent):
             for client in self.clients:
                 if event_type in client["subscriptions"]:
                     self.server.send_message(client, json.dumps(event))
-
-    def new_client(self, client, server):
-        client["subscriptions"] = []
-
-    def client_left(self, client, server):
-        print("Client(%d) disconnected" % client['id'])
-
-    def message_received(self, client, server, msg):
-        #print("Client{}: {}".format(client['id'], msg))
-        event = json.loads(msg)
-        event_type = event["type"]
-        event_data = event["data"]
-        if event_type == "subscribe":
-            self._subscribe(client, event_data)
-        elif event_type == "unsubscribe":
-            self._unsubscribe(client, msg)
-        else:
-            Dispatcher().post(Event(type=event_type, data=event_data))
 
     def _subscribe(self, client, event_data):
         client["subscriptions"].append(str(event_data))
