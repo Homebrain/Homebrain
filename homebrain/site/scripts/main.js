@@ -36,6 +36,48 @@ app.controller("MainCtrl", function($scope, $route, $routeParams, $location) {
     $scope.$location = $location;
 });
 
+app.controller("LogWindowCtrl", function($scope, $route, $routeParams, $location) {
+    $scope.$route = $route;
+    $scope.$routeParams = $routeParams;
+    $scope.$location = $location;
+    $scope.messages = [];
+
+    var wsSocket = new WebSocket("ws://127.0.0.1:9091");
+
+    wsSocket.onopen = function (event) {
+        //exampleSocket.send("Here's some text that the server is urgently awaiting!");
+        msg1 = {"type": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a WebUI log websocket!"}};
+        wsSocket.send(JSON.stringify(msg1));
+        msg2 = {"type": "subscribe", "data": "log"};
+        wsSocket.send(JSON.stringify(msg2));
+    };
+
+    wsSocket.onclose = function (eventObj) {
+        console.warn("Connection to websocket lost");
+        var event = {"data": {"level": "warning", "msg": "Disconnected from websocket"}};
+        insertLogEvent(event);
+    };
+
+    wsSocket.onmessage = function (eventObj) {
+        var event = JSON.parse(eventObj.data);
+        insertLogEvent(event);
+    };
+
+    /**
+     * Events should follow the format
+     *   {"data": {"level": (one in ["info", "warning", "error"]),
+     *             "msg": "message to log")}}
+     * Add timestamps later!
+     */
+    function insertLogEvent(event){
+        // TODO: Move logic to AngularJS controller
+        $scope.messages.push(event["data"]);
+        // Scroll to bottom
+        var logbody = document.getElementById('logbody');
+        logbody.scrollTop = logbody.scrollHeight;
+    }
+});
+
 app.controller("HomeCtrl", function($scope, $resource) {
     var Agents = $resource("/api/v0/agents");
     Agents.get("", function(agents){

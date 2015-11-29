@@ -1,0 +1,17 @@
+<div ng-controller="LogWindowCtrl" class="panel panel-default" style="width: 40%; position: fixed; right: 0%; bottom: 0; margin: 0;">
+    <div ng-click="showLog = !showLog" class="panel-heading clickable">
+        <i ng-class="{'fa-minus-square-o': showLog, 'fa-plus-square-o': !showLog}" class="fa" style="padding-right: 0.5em;"></i> Log
+    </div>
+    <div id="logbody" ng-show="showLog" class="panel-body" style="overflow-y: scroll; max-height: 200px; padding: 0px;">
+        <table id ="logtable" class="table table-bordered table-condensed">
+            <tr ng-repeat="message in messages">
+                <td>
+                    <i class="fa" ng-class="{'fa-info-circle': message.level == 'info', 'fa-exclamation-triangle': message.level == 'warning'}"></i>
+                </td>
+                <td>
+                    {{message.msg}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
