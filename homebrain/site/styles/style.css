@@ -1,3 +1,17 @@
 .clickable {
     cursor: pointer;
 }
+
+
+
+/* Log messages colors */
+
+.info-blue {
+    color: #66F;
+}
+.warning-orange {
+    color: #FA3;
+}
+.error-red {
+    color: #F33;
+}

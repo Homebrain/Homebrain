@@ -6,7 +6,12 @@
         <table id ="logtable" class="table table-bordered table-condensed">
             <tr ng-repeat="message in messages">
                 <td>
-                    <i class="fa" ng-class="{'fa-info-circle': message.level == 'info', 'fa-exclamation-triangle': message.level == 'warning'}"></i>
+                    <i class="fa"
+                       ng-class="{'info-blue fa-info-circle': message.level == 'info',
+                                  'warning-orange fa-exclamation-circle': message.level == 'warning',
+                                  'error-red fa-exclamation-triangle': message.level == 'error'}"
+
+                            ></i>
                 </td>
                 <td>
                     {{message.msg}}
