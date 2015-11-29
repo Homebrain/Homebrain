@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
 
     <style>
         .agent-status {
@@ -65,10 +66,10 @@
     </div>
     <div>
         <div class="panel panel-default" style="width: 40%; position: fixed; right: 0%; bottom: 0; margin: 0;">
-            <div onclick="toggleHidden('logbody');" class="panel-heading">
-                    Log
+            <div ng-click="showLog = !showLog" class="panel-heading clickable">
+                <i ng-class="{'fa-minus-square-o': showLog, 'fa-plus-square-o': !showLog}" class="fa" style="padding-right: 0.5em;"></i> Log
             </div>
-            <div id="logbody" class="panel-body" style="display: none; overflow-y: scroll; max-height: 200px;">
+            <div id="logbody" ng-show="showLog" class="panel-body" style="overflow-y: scroll; max-height: 200px;">
                 <table id ="logtable" class="table table-bordered">
                 </table>
             </div>

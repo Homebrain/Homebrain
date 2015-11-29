@@ -3,6 +3,14 @@ from homebrain import AgentManager, Agent, Dispatcher
 from homebrain.utils import *
 from flask import Flask, Response, request, json
 
+# PROPOSAL: Make a core component (not an agent) with a separate agent that 
+#           hooks the core component allowing for communication via an API 
+#           endpoint such as /api/v0/endpoint/<name>/<method>.
+#           Such an agent should be able to have multiple instances running,
+#           for different purposes.
+
+# TODO: Change to a better name
+
 class RestListener(Agent):
 
     def __init__(self):
@@ -33,6 +41,10 @@ class RestListener(Agent):
         @self.app.route("/<_>/<__>/<___>")
         def index(**_):
             return self.app.send_static_file("index.html")
+        
+        @self.app.route("/styles/<filename>")
+        def styles(filename):
+            return self.app.send_static_file("styles/" + filename)
 
         @self.app.route("/scripts/<filename>")
         def scripts(filename):
@@ -81,10 +93,9 @@ class RestListener(Agent):
 
 
     def run(self):
-        self.app.run(host='0.0.0.0', debug=False)
+        self.app.run(host='0.0.0.0', port=20444, debug=False)
 
     def stop(self):
-        from flask import request
         func = request.environ.get('werkzeug.server.shutdown')
         if func is None:
             raise RuntimeError('Not running with the Werkzeug Server')
