@@ -1,5 +1,6 @@
+from homebrain import Agent, Event
 from homebrain import AgentManager, Dispatcher
-from homebrain.base import Agent, Event
+from homebrain.core.decorators import stop_on_shutdown_event, log_exceptions, log_events
 import unittest
 import threading
 import time
@@ -13,9 +14,9 @@ class MockAgent(Agent):
         super(MockAgent, self).__init__()
         self.events = []
 
-    @Agent.stop_on_shutdown_event
-    @Agent.log_exceptions
-    @Agent.log_events
+    @stop_on_shutdown_event
+    @log_exceptions
+    @log_events
     def handle_event(self, event):
         self.events.append(event)
         if event["type"] == "test_exception":
@@ -48,7 +49,7 @@ class AgentTest(unittest.TestCase):
         time.sleep(WAIT_TIME)
         self.assertEqual(1, len(self.mock_agent.events))
 
-    @patch("homebrain.base.logging")
+    @patch("homebrain.core.decorators.logging")
     def test_logging_decorators(self, mock_logging):
         """The logging decorators should yield one logging call per event, plus one per exception."""
         self.assertEqual(0, total_debug_calls(mock_logging))

@@ -9,9 +9,9 @@ from homebrain.agents.idfilter.idfilter import IDFilter
 
 from queue import Queue, Empty
 
+
 class MockOutputter(Agent):
     def run(self):
-        self.running = True
         self.events = []
         while self.running:
             try:
@@ -19,8 +19,6 @@ class MockOutputter(Agent):
                 self.events.append(event)
             except Empty as e:
                 pass
-    def stop(self):
-        self.running = False
 
 class IntegrationTest(unittest.TestCase):
     def setUp(self):
