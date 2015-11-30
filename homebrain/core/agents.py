@@ -5,7 +5,6 @@ Based on a stripped down version of base.py in ActivityWatch.
 """
 
 from abc import abstractmethod, ABCMeta
-import json
 import threading
 from queue import Queue, Empty
 from . import Event
@@ -57,14 +56,15 @@ class Agent(threading.Thread):
         """
         self._running = False
 
+    # TODO: Decide on the final name for this method: "post", "post_event", "put_event" or something else?
     def put_event(self, event: Event):
         self._mailbox.put(event)
 
     def next_event(self, timeout: Optional[float] = None) -> Optional[Event]:
         """
-        Waits
-        :param timeout:
-        :return:
+        Retrieves the next event in the queue.
+        Will block until event is available, unless timeout is set in which
+        case it will wait a maximum amount of time and then return None.
         """
         if timeout is None:
             return self._mailbox.get()
@@ -85,6 +85,12 @@ class Agent(threading.Thread):
 
 
 class PausableAgent(Agent):
+    """
+    A simple attempt at a pausable agent.
+    A pausable agent can simply pause it's event processing and resume it
+    at a later point in time without the need to instantiate a new thread.
+    """
+
     def __init__(self, **kwargs):
         Agent.__init__(**kwargs)
         self._not_paused_flag = threading.Event()
