@@ -8,7 +8,7 @@ import json
 class WebSocket(Agent):
     def __init__(self):
         super(WebSocket, self).__init__()
-        self.server = WebsocketServer(9091)
+        self.server = WebsocketServer(20445)
         self.wsThread = threading.Thread(target=self.server.run_forever)
         self.clients = self.server.clients
         self.subscriptions = []
@@ -67,4 +67,3 @@ class WebSocket(Agent):
         else:
             # Client wasn't found in subscribers list
             pass
-

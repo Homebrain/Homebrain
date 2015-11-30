@@ -45,8 +45,6 @@ def post_event():
 
 if __name__ == "__main__":
     if is_espeak_installed():
-        app.run(debug=True, port=9092)
+        app.run(debug=False, port=20444)
     else:
-        print("\n" +
-              "" +
-              "")
+        print("espeak is not installed")

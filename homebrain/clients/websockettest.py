@@ -31,7 +31,7 @@ def on_open(ws):
 
 
 if __name__ == "__main__":
-    ws = websocket.WebSocketApp("ws://127.0.0.1:9091/",
+    ws = websocket.WebSocketApp("ws://127.0.0.1:20445/",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)
