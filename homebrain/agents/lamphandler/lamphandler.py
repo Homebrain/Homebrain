@@ -18,7 +18,7 @@ class LampHandler(Agent):
         self.add_lamp("http://localhost:9090/", "Simulated lamp")
 
     def add_lamp(self, url, name=None):
-        if name == None:
+        if name is None:
             name = "Unnamed Lamp"
         self.lamps.append(Lamp(name, url))
 
@@ -26,4 +26,4 @@ class LampHandler(Agent):
         outgoing_event = Event(type="lamp", data={'action': 'toggle'})
         for lamp in self.lamps:  # Toggle all lamps
             requests.request("POST", lamp.url,
-                             json=outgoing_event.to_json_str())
+                             json=outgoing_event.to_json())

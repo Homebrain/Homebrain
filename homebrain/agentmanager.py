@@ -2,7 +2,7 @@ from datetime import datetime
 import logging
 from typing import Set, List, Iterable
 
-from . import Agent
+from .core import Agent
 from .utils import Singleton
 
 

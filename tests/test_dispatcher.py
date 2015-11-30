@@ -10,7 +10,7 @@ class MockAgent(Agent):
         self.event_received = threading.Event()
 
     def create_event(self):
-        Dispatcher().post(Event(**{"type": "test"}))
+        Dispatcher().put_event(Event(**{"type": "test"}))
 
     def run(self):
         event = self.next_event()

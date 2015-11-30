@@ -1,4 +1,6 @@
 from homebrain import Agent, Dispatcher
+from homebrain.core.decorators import stop_on_shutdown_event
+
 
 class TemplateAgent(Agent):
     def __init__(self, target=None):
@@ -8,7 +10,7 @@ class TemplateAgent(Agent):
         # Only bind manually if you are an endpoint agent. Otherwise, use Dispatcher.chain at config time.
         Dispatcher().bind(self, "exampletype1")
 
-    @Agent.stop_on_shutdown_event
+    @stop_on_shutdown_event
     def handle_event(self, event):
         # Handle incoming events
         pass

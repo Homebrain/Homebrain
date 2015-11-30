@@ -1,6 +1,6 @@
 from . import utils
 
-from .base import Agent, Event
+from .core import Agent, Event
 from .dispatcher import Dispatcher
 from .agentmanager import AgentManager
 

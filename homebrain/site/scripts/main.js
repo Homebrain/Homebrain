@@ -41,10 +41,12 @@ app.controller("LogWindowCtrl", function($scope, $route, $routeParams, $location
     $scope.$routeParams = $routeParams;
     $scope.$location = $location;
     $scope.messages = [];
+    $scope.showLog = false;
 
     var wsSocket = new WebSocket("ws://127.0.0.1:9091");
 
     wsSocket.onopen = function (event) {
+        console.info("Websocket opened!");
         //exampleSocket.send("Here's some text that the server is urgently awaiting!");
         msg1 = {"type": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a WebUI log websocket!"}};
         wsSocket.send(JSON.stringify(msg1));

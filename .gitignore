@@ -1,8 +1,18 @@
-*.swp
-*.pyc
-__pycache__
-*.egg-info
+# Project specific
 venv/
 build/
 dist/
+
+# Python specific
+__pycache__
+*.pyc
+*.egg-info
+
+# IDE/editor specific
 .idea/
+*.swp
+
+# In case we get node/bower deps on the site-files in the future
+bower_components
+node_modules
+npm-debug.log

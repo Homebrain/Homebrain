@@ -32,7 +32,7 @@ class WebSocket(Agent):
             elif event_type == "unsubscribe":
                 self._unsubscribe(client, msg)
             else:
-                Dispatcher().post(Event(type=event_type, data=event_data))
+                Dispatcher().put_event(Event(type=event_type, data=event_data))
 
     def run(self):
         self.wsThread.start()

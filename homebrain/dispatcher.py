@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from .utils import Singleton
 from .agentmanager import AgentManager
-from .base import Agent
+from .core import Agent
 
 
 @Singleton
@@ -27,11 +27,12 @@ class Dispatcher(Agent):
     def process(self, msg):
         agents = self._query_selector(msg["type"])
         for agent in agents:
-            agent.post(msg)
+            agent.put_event(msg)
 
     def chain(self, initial_trigger, *args):
         """Chains together a sequence of agents such that each one listens to the preceding one's event,
         and outputs an event the following agent will listen to."""
+        # TODO: Needs better documentation
         trigger = initial_trigger
         for agent in args:
             self.bind(agent, trigger)

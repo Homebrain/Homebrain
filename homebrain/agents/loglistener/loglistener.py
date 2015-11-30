@@ -1,3 +1,4 @@
+from collections import defaultdict
 from homebrain import Agent, Dispatcher
 import logging
 
@@ -21,17 +22,17 @@ class LogListener(Agent):
         # Level
         if "level" in data:
             levelstr = data["level"].lower()
-            if levelstr == "debug":
-                level = logging.DEBUG
-            elif levelstr == "info":
-                level = logging.INFO
-            elif levelstr == "warning":
+            levelmap = defaultdict(None)
+            levelmap.extend({"debug": logging.DEBUG,
+                             "info": logging.INFO,
+                             "warning": logging.WARNING,
+                             "error": logging.ERROR,
+                             "critical": logging.CRITICAL})
+            level = levelmap[levelstr]
+            if level is None:
+                logger.warning("Unknown logging level '{}', using warning".format(levelstr))
                 level = logging.WARNING
-            elif levelstr == "critical":
-                level = logging.CRITICAL
-            else:
-                self.log("Unknown logging level " + levelstr)
-                level = logging.INFO
         else:
-            level = logging.INFO
+            logger.warning("Event didn't have a level parameter, using warning")
+            level = logging.WARNING
         logger.log(level, msg)

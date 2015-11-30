@@ -1,10 +1,13 @@
 from homebrain import Agent, Event
+from homebrain.core.decorators import stop_on_shutdown_event, log_exceptions
 import requests
+
 
 class TTSClient:
     def __init__(self, name, url):
         self.name = name
         self.url = url
+
 
 class TTSHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
@@ -19,8 +22,8 @@ class TTSHandler(Agent):
             name = "Unnamed Lamp"
         self.clients.append(TTSClient(name, url))
 
-    @Agent.stop_on_shutdown_event
-    @Agent.log_exceptions
+    @stop_on_shutdown_event
+    @log_exceptions
     def handle_event(self, event):
         outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
-        requests.request("POST", self.host, json=outgoing_event.to_json_str())
+        requests.request("POST", self.host, json=outgoing_event.to_json())

@@ -34,7 +34,7 @@ class AgentTest(unittest.TestCase):
     def test_stops_on_shutdown_event(self):
         """Since the handle_event method is decorated with @stop_on_shutdown_event, a system_shutdown event should stop the thread."""
         self.assertEquals([], self.mock_agent.events)
-        self.mock_agent.post(Event(type="system_shutdown", data={}))
+        self.mock_agent.put_event(Event(type="system_shutdown", data={}))
         time.sleep(WAIT_TIME)
         # Agent should be stopped
         self.assertFalse(self.mock_agent.running)
@@ -44,7 +44,7 @@ class AgentTest(unittest.TestCase):
     def test_receives_events(self):
         """The conveyor belts' handle_event method should be called for every event that is posted to it."""
         self.assertEquals([], self.mock_agent.events)
-        self.mock_agent.post(Event(type="button", data={}))
+        self.mock_agent.put_event(Event(type="button", data={}))
         time.sleep(WAIT_TIME)
         self.assertEqual(1, len(self.mock_agent.events))
 
@@ -52,12 +52,12 @@ class AgentTest(unittest.TestCase):
     def test_logging_decorators(self, mock_logging):
         """The logging decorators should yield one logging call per event, plus one per exception."""
         self.assertEqual(0, total_debug_calls(mock_logging))
-        self.mock_agent.post(Event(type="button", data={}))
-        self.mock_agent.post(Event(type="button", data={}))
-        self.mock_agent.post(Event(type="button", data={}))
+        self.mock_agent.put_event(Event(type="button", data={}))
+        self.mock_agent.put_event(Event(type="button", data={}))
+        self.mock_agent.put_event(Event(type="button", data={}))
         time.sleep(WAIT_TIME)
         self.assertEqual(3, total_debug_calls(mock_logging))
-        self.mock_agent.post(Event(type="test_exception", data={}))
+        self.mock_agent.put_event(Event(type="test_exception", data={}))
         time.sleep(WAIT_TIME)
         self.assertEqual(5, total_debug_calls(mock_logging))
         self.assertEqual(1, mock_logging.exception.call_count)
