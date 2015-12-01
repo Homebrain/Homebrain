@@ -1,3 +1,6 @@
+# Homebrain specific
+homebrain/logs
+
 # Project specific
 venv/
 build/

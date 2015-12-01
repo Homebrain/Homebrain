@@ -2,6 +2,7 @@
 from homebrain import Agent, Dispatcher, Event
 from websocket_server import WebsocketServer
 import threading
+import logging
 import json
 
 
@@ -19,11 +20,10 @@ class WebSocket(Agent):
 
         @self.server.set_fn_client_left
         def client_left(client, server):
-            print("Client(%d) disconnected" % client['id'])
+            logging.info("Client(%d) disconnected" % client['id'])
 
         @self.server.set_fn_message_received
         def message_received(client, server, msg):
-            # print("Client{}: {}".format(client['id'], msg))
             event = json.loads(msg)
             event_type = event["type"]
             event_data = event["data"]
@@ -52,7 +52,7 @@ class WebSocket(Agent):
         if not str(event_data) in self.subscriptions:
             self.subscriptions.append(str(event_data))
             Dispatcher().bind(self, event_data)
-        print("Client subscribed to " + event_data)
+        logging.info("Client subscribed to " + event_data)
 
     def _unsubscribe(self, client, event_data):
         if str(event_data) in client["subscriptions"]:
@@ -63,7 +63,7 @@ class WebSocket(Agent):
                     othersubscriber = True
             if not othersubscriber:
                 self.subscriptions.remove(str(event_data))
-            print("Client unsubscribed from " + event_data)
+            logging.info("Client unsubscribed from " + event_data)
         else:
             # Client wasn't found in subscribers list
             pass

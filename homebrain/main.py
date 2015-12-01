@@ -7,6 +7,7 @@ import traceback
 from .moduleloader import import_all_modules
 from .dispatcher import Dispatcher
 from . import AgentManager
+from .logging import setup_logging
 
 
 def run_chunker_example(dispatcher, am):
@@ -20,8 +21,8 @@ def start():
     parser.add_argument('--debug', action='store_true', help='Sets loglevel to debug')
     args = parser.parse_args()
 
-    loglevel = logging.DEBUG if args.debug else logging.INFO
-    logging.basicConfig(level=loglevel, format="%(asctime)s %(levelname)s from %(threadName)s: %(message)s")
+    # Initialize logger
+    setup_logging(args.debug)
 
     # Initialize AgentManager for the first time (it's a singleton)
     am = AgentManager()
