@@ -128,6 +128,12 @@ app.controller("NodeCtrl", function($scope, $resource, $routeParams) {
 });
 
 app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
+    var Agents = $resource("/api/v0/agents");
+    Agents.get("", function(agents){
+        agent = agents[$routeParams.id];
+        console.log(agent);
+        $scope.agent = agent;
+    })
 });
 
 app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
