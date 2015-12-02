@@ -18,8 +18,7 @@
                 <td>
                     <div ng-switch on="node.status">
                         <!-- TODO: Fix node.status so that is a boolean -->
-                        {{node.status}}
-                        <div ng-switch-when="True" style="color: green;">
+                        <div ng-switch-when="true" style="color: green;">
                             Running
                         </div>
                         <div ng-switch-default style="color: red;">

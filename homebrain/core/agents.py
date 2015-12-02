@@ -22,13 +22,16 @@ class Agent(threading.Thread):
 
     def __init__(self, event_timeout=0.2):
         self.id = self.nrAgents
-        threading.Thread.__init__(self, name=self.identifier)
-        self._mailbox = Queue()
-        self.nrAgents += 1
-        self.daemon = True
-        self.timeout = event_timeout
-        self._running = True
+        self.nrAgents += 1  # statically increase the number of agents created
 
+        threading.Thread.__init__(self, name=self.identifier, daemon=True)
+        self._mailbox = Queue()
+
+        self._running = False
+        self.timeout = event_timeout
+        self.processed_events = 0
+
+    # TODO: Rename "identifier" to something less like the class attribute id
     @property
     def identifier(self) -> str:
         """Identifier for agent, used in settings and as a module name shorter than the class name"""
@@ -38,12 +41,17 @@ class Agent(threading.Thread):
     def running(self) -> bool:
         return self._running
 
+    def start(self, *args, **kwargs):
+        self._running = True
+        threading.Thread.start(self, *args, **kwargs)
+
     def run(self):
         try:
             while self.running:
                 try:
                     event = self.next_event(timeout=self.timeout)
                     self.handle_event(event)
+                    self.processed_events += 1
                 except Empty:
                     pass
         finally:
@@ -83,6 +91,13 @@ class Agent(threading.Thread):
         """
         pass
 
+    def to_json_dict(self):
+        """Dumps information about the agent in a JSON-serializable format"""
+        obj = {"name": self.identifier, "id": self.id, 
+                "status": self.isAlive(), "enabled": self.running, 
+                "queue_size": self._mailbox.qsize(), "processed_events": self.processed_events}
+        return obj
+
 
 class PausableAgent(Agent):
     """
@@ -90,11 +105,13 @@ class PausableAgent(Agent):
     A pausable agent can simply pause it's event processing and resume it
     at a later point in time without the need to instantiate a new thread.
     """
+    # WARNING: NOT TESTED! PROBABLY NOT WORKING!
 
     def __init__(self, **kwargs):
         Agent.__init__(**kwargs)
         self._not_paused_flag = threading.Event()
         self._not_paused_flag.set()
+        raise NotImplementedError
 
     def run(self):
         try:

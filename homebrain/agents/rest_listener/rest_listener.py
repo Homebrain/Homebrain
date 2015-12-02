@@ -59,8 +59,8 @@ class RestListener(Agent):
         #
 
         # Static dummy dict
-        nodes = {'node1': {'name': 'node1', 'status': 'Hopefully online', 'ip': '192.168.1.3'},
-                 'node2': {'name': 'node2', 'status': 'Sadly offline :(', 'ip': '192.168.1.4'}}
+        nodes = {'node1': {'name': 'dummynode1', 'status': True, 'ip': '192.168.1.3'},
+                 'node2': {'name': 'dummynode2', 'status': False, 'ip': '192.168.1.4'}}
 
         @self.app.route("/api/v0/nodes")
         def get_nodes():
@@ -77,9 +77,7 @@ class RestListener(Agent):
         def get_agents():
             agents = {}
             for agent in AgentManager().agents:
-                agents[agent.identifier] = {"id": agent.id,
-                                            "name": agent.identifier,
-                                            "status": str(agent.isAlive())}
+                agents[agent.identifier] = agent.to_json_dict()
             return json.dumps(agents)
 
         @self.app.route('/api/v0/test')

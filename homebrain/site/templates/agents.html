@@ -11,20 +11,29 @@
                 <th>Name</th>
                 <th>Status</th>
                 <th>ID</th>
+                <th>In Queue</th>
+                <th>Processed</th>
             </tr>
-            <tr ng-repeat="agent in agents" ng-class="{'danger': agent.status != 'True'}">
+            <tr ng-repeat="agent in agents" ng-class="{'danger': agent.status != true}">
                 <td><a href="/agents/{{agent.name}}">{{agent.name}}</a></td>
                 <td>
-                    <div ng-switch on="agent.status">
-                        <div ng-switch-when="True" style="color: green;">
+                    <span ng-switch on="agent.enabled">
+                        <span ng-switch-when="true" style="color: green;">Enabled</span>
+                        <span ng-switch-default style="color: red;">Disabled</span>
+                    </span>
+                    and
+                    <span ng-switch on="agent.status">
+                        <span ng-switch-when="true" style="color: green;">
                             Running
-                        </div>
-                        <div ng-switch-default style="color: red;">
+                        </span>
+                        <span ng-switch-default style="color: red;">
                             Dead
-                        </div>
-                    </div>
+                        </span>
+                    </span>
                 </td>
                 <td>{{agent.id}}</td>
+                <td>{{agent.queue_size}}</td>
+                <td>{{agent.processed_events}}</td>
             </tr>
         </table>
     </div>
