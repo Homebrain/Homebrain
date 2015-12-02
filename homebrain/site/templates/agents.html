@@ -12,7 +12,7 @@
                 <th>Status</th>
                 <th>ID</th>
             </tr>
-            <tr ng-repeat="agent in agents">
+            <tr ng-repeat="agent in agents" ng-class="{'danger': agent.status != 'True'}">
                 <td><a href="/agents/{{agent.name}}">{{agent.name}}</a></td>
                 <td>
                     <div ng-switch on="agent.status">
