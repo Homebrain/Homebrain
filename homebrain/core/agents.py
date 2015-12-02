@@ -27,9 +27,9 @@ class Agent(threading.Thread):
         threading.Thread.__init__(self, name=self.identifier, daemon=True)
         self._mailbox = Queue()
 
-        self._running = False
-        self.timeout = event_timeout
-        self.processed_events = 0
+        self._enabled = False
+        self._wait_for_event_timeout = event_timeout
+        self._processed_events = 0
 
     # TODO: Rename "identifier" to something less like the class attribute id
     @property
@@ -39,19 +39,34 @@ class Agent(threading.Thread):
 
     @property
     def running(self) -> bool:
-        return self._running
+        """Returns true if the agent is actually running, otherwise false"""
+        return self.is_alive()
+
+    @property
+    def enabled(self) -> bool:
+        """Returns true if the agent is supposed to be running, otherwise false"""
+        return self._enabled
+
+    @property
+    def queue_size(self) -> int:
+        """Doesn't guarrantee the exact size of the queue, see Queue.qsize() docs for more info"""
+        return self._mailbox.qsize()
+
+    @property
+    def processed_events(self) -> int:
+        """Returns how many events have been removed from the queue"""
+        return self._processed_events
 
     def start(self, *args, **kwargs):
-        self._running = True
+        self._enabled = True
         threading.Thread.start(self, *args, **kwargs)
 
     def run(self):
         try:
-            while self.running:
+            while self.enabled:
                 try:
-                    event = self.next_event(timeout=self.timeout)
+                    event = self.next_event(timeout=self._wait_for_event_timeout)
                     self.handle_event(event)
-                    self.processed_events += 1
                 except Empty:
                     pass
         finally:
@@ -75,9 +90,14 @@ class Agent(threading.Thread):
         case it will wait a maximum amount of time and then return None.
         """
         if timeout is None:
-            return self._mailbox.get()
+            event = self._mailbox.get()
         else:
-            return self._mailbox.get(True, timeout=timeout)
+            event = self._mailbox.get(True, timeout=timeout)
+
+        if event is not None:
+            self._processed_events += 1
+
+        return event
 
     # TODO: make @abstractmethod without breaking everything
     def handle_event(self, event):
@@ -93,9 +113,9 @@ class Agent(threading.Thread):
 
     def to_json_dict(self):
         """Dumps information about the agent in a JSON-serializable format"""
-        obj = {"name": self.identifier, "id": self.id, 
-                "status": self.isAlive(), "enabled": self.running, 
-                "queue_size": self._mailbox.qsize(), "processed_events": self.processed_events}
+        obj = {"name": self.identifier, "id": self.id,
+                "status": self.running, "enabled": self.enabled,
+                "queue_size": self.queue_size, "processed_events": self.processed_events}
         return obj
 
 
