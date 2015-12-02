@@ -88,7 +88,7 @@ app.controller("HomeCtrl", function($scope, $resource) {
         var c = 0
         for (node in $scope.agents) {
             // TODO: Don't represent node status as a string when the string only represents a boolean
-            if ($scope.agents[node].status == "True")
+            if ($scope.agents[node].status == true)
                 c++;
         }
         $scope.agentsrunning = c;
