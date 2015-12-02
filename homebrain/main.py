@@ -4,9 +4,8 @@ import argparse
 from time import sleep
 import traceback
 
-from .moduleloader import import_all_modules
 from .dispatcher import Dispatcher
-from . import AgentManager
+from . import AgentManager, ModuleManager
 from .logging import setup_logging
 
 
@@ -24,17 +23,15 @@ def start():
     # Initialize logger
     setup_logging(args.debug)
 
+    # Initialize ModuleManager for the first time (it's a singleton)
+    mm = ModuleManager()
+
     # Initialize AgentManager for the first time (it's a singleton)
     am = AgentManager()
 
     # TODO: Integrate this better into the rest of the system
     d = Dispatcher()
     d.start()
-
-    # Import modules
-    autostartagents = import_all_modules()
-    # Add autostart agents
-    am.add_agents(autostartagents)
 
     # run simulated demo agents
     #run_chunker_example(d, am)

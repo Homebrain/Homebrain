@@ -143,4 +143,9 @@ app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
         console.log(agents)
         $scope.agents = agents;
     })
+    var Modules = $resource("/api/v0/modules");
+    Modules.get("", function(modules){
+        console.log(modules)
+        $scope.modules = modules;
+    })
 });

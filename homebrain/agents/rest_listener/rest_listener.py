@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-from homebrain import AgentManager, Agent, Dispatcher
+from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
 from flask import Flask, Response, request, json, make_response
 
 
 # PROPOSAL: Make a core component (not an agent) with a separate agent that
-#           hooks the core component allowing for communication via an API 
+#           hooks the core component allowing for communication via an API
 #           endpoint such as /api/v0/endpoint/<name>/<method>.
 #           Such an agent should be able to have multiple instances running,
 #           for different purposes.
@@ -80,13 +80,14 @@ class RestListener(Agent):
                 agents[agent.identifier] = agent.to_json_dict()
             return json.dumps(agents)
 
-        @self.app.route('/api/v0/test')
-        def test_endpoint():
-            data = {"msg": "Hello World!"}
-            payload = json.dumps(data)
-            r = Response(response=payload,
-                         mimetype="application/json")
-            return r
+        @self.app.route('/api/v0/modules')
+        def get_modules():
+            modules = {}
+            for module in ModuleManager().modules:
+                modules[module.agentclass.__name__] = {
+                    "name": module.agentclass.__name__,
+                    "autostart": module.autostart }
+            return json.dumps(modules)
 
     def run(self):
         self.app.run(host='0.0.0.0', port=20444, debug=False)
