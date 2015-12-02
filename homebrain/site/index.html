@@ -2,7 +2,7 @@
 <html ng-app="HomeBrain">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>HomeBrain</title>
+    <title>Homebrain</title>
     <base href="/">
 
     <script src="http://underscorejs.org/underscore.js"></script>
@@ -35,7 +35,7 @@
     <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                    <a class="navbar-brand" href="/">HomeBrain</a>
+                    <a class="navbar-brand" href="/">Homebrain</a>
             </div>
             <div class="navbar-left" style="position: relative; bottom: -1.25em;">
                 <a class="navbar-link" style="padding-left: 1em;" ng-href="/">Dashboard</a>
@@ -49,23 +49,12 @@
             <div class="col-md-10">
                 <div ng-view></div>
             </div>
-            <div ng-controller="AgentListCtrl" class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-heartbeat panel-heading-icon"></i>
-                        <b>Status</b>
-                        <a ng-click="update_agents()" style="cursor: pointer; float: right;"><i class="fa fa-refresh" ng-class="{'fa-spin': refreshing}"></i></a>
-                    </div>
-                    <div class="panel-body">
-                        Add data here
-                    </div>
-                </div>
+            <div class="col-md-2">
+                <ng-include src="'/templates/status.html'"/>
             </div>
         </div>
     </div>
-    <div>
-        <ng-include src="'/templates/logwindow.html'"></ng-include>
-    </div>
+    <ng-include src="'/templates/logwindow.html'"/>
 </div>
 </body>
 </html>
