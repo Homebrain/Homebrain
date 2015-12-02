@@ -20,6 +20,18 @@ Run with `homebrain`
 
 There is a [**Slack**](https://homebrain.slack.com/) for team communication and a [**Trello board**](https://trello.com/b/qTIPOiPS/homebrain) for planning.
 
+### Documentation
+
+There is currently no pre-built documentation, but you can easily build it yourself by installing sphinx and sphinx-autodoc-typehints:
+
+    sudo pip3 install sphinx sphinx-autodoc-typehints
+
+You can then build the docs by entering the `docs` folder and running:
+
+    python3 -m sphinx -b html . _build
+
+You will then find the built docs in `docs/_build/index.html`.
+
 ### Tests
 
 The most convenient way to run the tests is with nose. Install with `pip3 install nose` and run with `nosetests` from the root directory of the project.

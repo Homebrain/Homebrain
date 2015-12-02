@@ -9,10 +9,15 @@ from .utils import Singleton
 @Singleton
 class AgentManager:
     def __init__(self):
-        self._agents = set()  # type: set[Agent]
+        self._agents = set()  # type: Set[Agent]
         self._started = datetime.now()
 
     def add_agent(self, agent: Agent):
+        """
+        Adds an agent to be managed
+
+        :param agent: agent to be managed
+        """
         if not isinstance(agent, Agent):
             raise Exception("'{}' is not an agent")
 
@@ -22,18 +27,17 @@ class AgentManager:
             logging.warning("Agent '{}' already added to the agent manager".format(agent))
 
     def add_agents(self, agents: List[Agent]):
+        """Adds several agents to be managed"""
         for agent in agents:
             self.add_agent(agent)
 
     @property
     def agents(self) -> Set[Agent]:
+        """Contains the set of managed agents"""
         return self._agents
 
-    def get_subscribers(self, agent_type: str):
-        return self._subscriptions[agent_type]
-
     def start_agents(self):
-        """Starts all agents"""
+        """Starts all managed agents not already running, in no particular order."""
         self._start_agents(self.agents)
 
     @staticmethod
@@ -44,7 +48,8 @@ class AgentManager:
                 agent.start()
 
     def stop_agents(self):
-        self._stop_agents(self.loggers)
+        """Stops all agents"""
+        self._stop_agents(self.agents)
 
     @staticmethod
     def _stop_agents(agents: Iterable[Agent]):

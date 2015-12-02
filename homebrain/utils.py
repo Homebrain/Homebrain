@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Any
+import functools
 
 import homebrain
 import os
@@ -9,6 +10,7 @@ class Singleton:
     def __init__(self, cls):
         self.cls = cls
         self.instance = None
+        functools.update_wrapper(self, cls)
 
     def __call__(self, *args, **kwds) -> Any:
         if self.instance is None:
