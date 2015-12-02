@@ -12,18 +12,6 @@ class AgentManager:
     def __init__(self):
         self._agents = set()  # type: Set[Agent]
         self._started = datetime.now()
-        self._load_agents()
-
-    def _load_agents(self):
-        """ Gets all modules from the ModuleManager and starts all agents with autostart set to true """
-
-        # Find and start all autostart modules
-        autostartedagents = []
-        for module in ModuleManager().modules:
-            if hasattr(module, 'autostart') and module.autostart == True:
-                autostartedagents.append(module.agentclass())
-        logging.info("Started " + str(len(autostartedagents)) + " listener agents")
-        self.add_agents(autostartedagents)
 
     def add_agent(self, agent: Agent):
         """

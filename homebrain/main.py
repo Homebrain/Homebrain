@@ -23,11 +23,14 @@ def start():
     # Initialize logger
     setup_logging(args.debug)
 
-    # Initialize ModuleManager for the first time (it's a singleton)
-    mm = ModuleManager()
-
     # Initialize AgentManager for the first time (it's a singleton)
     am = AgentManager()
+
+    # Initialize ModuleManager for the first time (it's a singleton)
+    mm = ModuleManager()
+    # Start all autostart agents
+    autostarted = mm.start_autostart_agents()
+    AgentManager().add_agents(autostarted)
 
     # TODO: Integrate this better into the rest of the system
     d = Dispatcher()

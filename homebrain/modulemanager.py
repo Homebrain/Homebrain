@@ -1,26 +1,33 @@
-from datetime import datetime
 import logging
 import os
 import sys
 import importlib
 import logging
 import traceback
-from homebrain.utils import get_cwd
 
-from .utils import Singleton
+from .agentmanager import *
+from .utils import Singleton, get_cwd
 
 @Singleton
 class ModuleManager:
     def __init__(self):
-        self._agents = set()  # type: Set[Agent]
         self._modules = []    # type: []
-        self._started = datetime.now()
         self._import_all()
 
     @property
     def modules(self) -> []:
         """ Contains the set loaded agent modules """
         return self._modules
+
+    def start_autostart_agents(self):
+        """ Starts all agents with autostart set to true """
+        # Find and start all autostart modules
+        startedagents = []
+        for module in self.modules:
+            if hasattr(module, 'autostart') and module.autostart == True:
+                startedagents.append(module.agentclass())
+        logging.info("Started " + str(len(startedagents)) + " listener agents")
+        return startedagents
 
     def _import_all(self):
         """ Imports all agents, returns an array of all loaded modules """
