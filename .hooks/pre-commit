@@ -7,8 +7,19 @@ TEST_EXIT_CODE=$?
 
 
 if [ "$TEST_EXIT_CODE" != "0" ]; then
-        echo "> Tests DID NOT pass !"
-        exit 1
+    echo "> Tests DID NOT pass!"
+    echo -n "Commit anyway? (y/n): "
+
+    # Allows us to read user input below, assigns stdin to keyboard
+    exec < /dev/tty
+
+    read response
+    if [ "$response" == "y" ]; then
+        exit 0
+    fi
+
+    echo "Aborting commit..."
+    exit 1
 fi
 
 exit 0
