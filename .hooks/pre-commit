@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+PROJECT_DIR=$(git rev-parse --show-toplevel)
+
+TEST_OUTPUT=$(nosetests3 "$PROJECT_DIR/tests")
+TEST_EXIT_CODE=$?
+
+
+if [ "$TEST_EXIT_CODE" != "0" ]; then
+        echo "> Tests DID NOT pass !"
+        exit 1
+fi
+
+exit 0
