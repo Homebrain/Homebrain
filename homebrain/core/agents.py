@@ -77,7 +77,7 @@ class Agent(threading.Thread):
         Stops the agent.
         Not guaranteed to stop since it relies on the implementation of the specific agent.
         """
-        self._running = False
+        self._enabled = False
 
     # TODO: Decide on the final name for this method: "post", "post_event", "put_event" or something else?
     def put_event(self, event: Event):
