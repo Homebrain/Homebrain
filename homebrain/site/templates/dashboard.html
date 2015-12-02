@@ -1,18 +1,33 @@
-<h2><i class="fa fa-dashboard"></i> Dashboard</h2>
+<div class="panel panel-default">
 
-<div style="display: flex;">
-    <div class="col-md-6 well" style="margin: 1em;">
-        <h4>
-            <a href="/nodes">Nodes</a>
-        </h4>
-        Connected: {{nodec}}
+    <div class="panel-heading panel-title">
+        <h3 class="panel-title">
+            <i class="fa fa-dashboard panel-heading-icon"></i> 
+            Dashboard
+        </h3>
     </div>
-    <div class="col-md-6 well" style="margin: 1em;">
-        <h4>
-            <a href="/agents">Agents</a>
-        </h4>
-        Enabled: {{agentsenabled}}
-        <br>
-        Running: {{agentsrunning}}
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="well well-sm">
+                    <h4>
+                        <a href="/nodes">Nodes</a>
+                    </h4>
+                    Connected: {{nodec}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="well well-sm">
+                    <h4>
+                        <a href="/agents">Agents</a>
+                    </h4>
+                    Enabled: {{agentsenabled}}
+                    <br>
+                    Running: {{agentsrunning}}
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>

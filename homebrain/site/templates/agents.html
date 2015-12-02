@@ -1,32 +1,31 @@
-<h2>Agents</h2>
-
-<div ng-repeat="agent in agents">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <a href="/agents/{{agent.name}}">{{agent.name}}</a>
-        </div>
-        <div class="panel-body well-sm">
-            <table class="table table-bordered">
-                <tr>
-                    <td>
-                        Status
-                    </td>
-                    <td>
-                        <div ng-switch on="agent.status">
-                            <div ng-switch-when="True" style="color: green;">
-                                Running
-                            </div>
-                            <div ng-switch-default style="color: red;">
-                                Dead
-                            </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h1 class="panel-title">
+            <i class="fa fa-cogs panel-heading-icon"></i>
+            Agents
+        </h1>
+    </div>
+    <div class="panel-body" style="padding: 0px;">
+        <table class="table table-hover table-bordered" style="margin-bottom: 0px;">
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>ID</th>
+            </tr>
+            <tr ng-repeat="agent in agents">
+                <td><a href="/agents/{{agent.name}}">{{agent.name}}</a></td>
+                <td>
+                    <div ng-switch on="agent.status">
+                        <div ng-switch-when="True" style="color: green;">
+                            Running
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>ID</td>
-                    <td>{{agent.id}}</td>
-                </tr>
-            </table>
-        </div>
+                        <div ng-switch-default style="color: red;">
+                            Dead
+                        </div>
+                    </div>
+                </td>
+                <td>{{agent.id}}</td>
+            </tr>
+        </table>
     </div>
 </div>

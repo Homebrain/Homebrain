@@ -1,18 +1,34 @@
-<h2>Nodes</h2>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <i class="fa fa-server panel-heading-icon"></i>
+            Nodes
+        </h4>
+    </div>
 
-<div ng-repeat="node in nodes">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <a href="/nodes/{{node.name}}">{{node.name}}</a>
-        </div>
-        <div class="panel-body well-sm">
-            <table class="table table-bordered">
-                <p style="color: green;">{{node.status}}</p>
-                <tr>
-                    <td>IP</td>
-                    <td>{{node.ip}}</td>
-                </tr>
-            </table>
-        </div>
+    <div class="panel-body" style="padding: 0px;">
+        <table class="table table-hover table-bordered" style="margin-bottom: 0px;">
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>IP</th>
+            </tr>
+            <tr ng-repeat="node in nodes">
+                <td><a href="/nodes/{{node.name}}">{{node.name}}</a></td>
+                <td>
+                    <div ng-switch on="node.status">
+                        <!-- TODO: Fix node.status so that is a boolean -->
+                        {{node.status}}
+                        <div ng-switch-when="True" style="color: green;">
+                            Running
+                        </div>
+                        <div ng-switch-default style="color: red;">
+                            Dead
+                        </div>
+                    </div>
+                </td>
+                <td>{{node.ip}}</td>
+            </tr>
+        </table>
     </div>
 </div>
