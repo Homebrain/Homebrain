@@ -15,6 +15,7 @@ from flask import Flask, Response, request, json, make_response
 class RestListener(Agent):
     def __init__(self):
         super(RestListener, self).__init__()
+        self.target = self.identifier
         self.dispatcher = Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
@@ -88,6 +89,21 @@ class RestListener(Agent):
                     "name": module.agentclass.__name__,
                     "autostart": module.autostart }
             return json.dumps(modules)
+
+        @self.app.route('/api/v0/chains')
+        def get_chains():
+            chains = {}
+            # Not the cleanest code for tree generation, but works
+            for agent in AgentManager().agents:
+                if agent.target != agent.identifier:
+                    links = agent.target.split('->')
+                    prelink = chains
+                    for link in range(len(links)):
+                        i = links[link]
+                        if not i in prelink:
+                            prelink[i] = {}
+                        prelink = prelink[i]
+            return json.dumps(chains)
 
     def run(self):
         self.app.run(host='0.0.0.0', port=20444, debug=False)

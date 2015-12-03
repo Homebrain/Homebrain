@@ -143,6 +143,31 @@ app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
         console.log(agents)
         $scope.agents = agents;
     })
+    var Chains = $resource("/api/v0/chains");
+    Chains.get("", function(chains){
+        //console.log(chains)
+        chains = angular.fromJson(angular.toJson(chains));
+        strarr = []
+
+        // Traverse chain tree
+        traversed = []
+        function traverse(pos){
+            if ( Object.keys(pos).length === 0){
+                strarr.push(traversed.toString());
+            }
+            else {
+                for (var key in pos){
+                    traversed.push(key);
+                    console.log(traversed);
+                    traverse(pos[key]);
+                }
+            }
+            traversed.pop();
+        }
+        traverse(chains);
+        console.log(strarr)
+        $scope.chains = strarr;
+    })
     var Modules = $resource("/api/v0/modules");
     Modules.get("", function(modules){
         console.log(modules)
