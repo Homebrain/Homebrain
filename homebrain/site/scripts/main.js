@@ -113,7 +113,7 @@ app.controller("AgentListCtrl", function($scope, $resource, $routeParams) {
 app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
     var Nodes = $resource("/api/v0/nodes");
     Nodes.get("", function(nodes){
-        console.log(nodes)
+        //console.log(nodes)
         $scope.nodes = nodes;
     })
 });
@@ -121,9 +121,9 @@ app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
 app.controller("NodeCtrl", function($scope, $resource, $routeParams) {
     var Node = $resource("/api/v0/nodes/"+$routeParams.id);
 
-    console.log($routeParams)
+    //console.log($routeParams)
     Node.get("", function(node){
-        console.log(node)
+        //console.log(node)
         $scope.node = node;
     })
 });
@@ -132,7 +132,7 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
     var Agents = $resource("/api/v0/agents");
     Agents.get("", function(agents){
         agent = agents[$routeParams.id];
-        console.log(agent);
+        //console.log(agent);
         $scope.agent = agent;
     })
 });
@@ -140,7 +140,7 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
 app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
     var Agents = $resource("/api/v0/agents");
     Agents.get("", function(agents){
-        console.log(agents)
+        //console.log(agents)
         $scope.agents = agents;
     })
     var Chains = $resource("/api/v0/chains");
@@ -158,19 +158,19 @@ app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
             else {
                 for (var key in pos){
                     traversed.push(key);
-                    console.log(traversed);
+                    //console.log(traversed);
                     traverse(pos[key]);
                 }
             }
             traversed.pop();
         }
         traverse(chains);
-        console.log(strarr)
+        //console.log(strarr)
         $scope.chains = strarr;
     })
     var Modules = $resource("/api/v0/modules");
     Modules.get("", function(modules){
-        console.log(modules)
+        //console.log(modules)
         $scope.modules = modules;
     })
 });
