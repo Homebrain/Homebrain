@@ -3,6 +3,7 @@ import os
 import netifaces
 import ipaddress
 import time
+import logging
 from multiprocessing.pool import ThreadPool
 
 from homebrain import Agent, Event, Dispatcher
@@ -13,12 +14,17 @@ class DeviceMonitor(Agent):
         self.target = target if target is not None else self.identifier
         self.dispatcher = Dispatcher()
 
-        (gateway_ip, interface) = netifaces.gateways()['default'][netifaces.AF_INET]
-        self.network = ipaddress.ip_network('%s/%d' % (gateway_ip, netmask), False)
+        default_gateway = netifaces.gateways()['default']
+        if (default_gateway):
+            (gateway_ip, interface) = default_gateway[netifaces.AF_INET]
+            self.network = ipaddress.ip_network('%s/%d' % (gateway_ip, netmask), False)
+        else:
+            logging.log(logging.ERROR, "DeviceMonitor couldn't start, no default gateway available")
+            self.stop()
 
     def run(self):
         known_devices = set()
-        while True:
+        while self._enabled:
             time.sleep(5)
             current_devices = self._active_devices()
             connected_devices = current_devices - known_devices
@@ -26,13 +32,13 @@ class DeviceMonitor(Agent):
 
             for (ip, hostname) in connected_devices:
                 data = {'data': {'action': 'connected', 'device': hostname}}
-                self.dispatcher.post(Event(type='device_connection', data=data))
-                print('device_connection', data)
+                self.dispatcher.put_event(Event(type='device_connection', data=data))
+                logging.log(logging.INFO, 'device_connection: '+str(data))
 
             for (ip, hostname) in disconnected_devices:
                 data = {'data': {'action': 'disconnected', 'device': hostname}}
-                self.dispatcher.post(Event(type='device_connection', data=data))
-                print('device_connection', data)
+                self.dispatcher.put_event(Event(type='device_connection', data=data))
+                logging.log(logging.INFO, 'device_connection: '+str(data))
 
             known_devices = current_devices
 

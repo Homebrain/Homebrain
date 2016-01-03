@@ -77,7 +77,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/technical.html#install-requires-vs-requirements-files
     install_requires=['flask', 'requests', 'mypy-lang', 'websocket-server', 'websocket-client',
-                      'netifaces'], # Useful hopefuls: tzlocal, pymongo
+                      'netifaces', 'netifaces'], # Useful hopefuls: tzlocal, pymongo
 
     entry_points={
         'console_scripts': ['homebrain = homebrain:start']
