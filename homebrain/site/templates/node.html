@@ -1,4 +1,26 @@
-<h3>{{node.name}}</h3>
+<h3>{{node.hostname}}</h3>
 
-<p style="color: green;">{{node.status}}</p>
-<p>{{node.ip}}</p>
+<table class="table table-hover table-bordered" style="margin-bottom: 0px;">
+    <tr>
+        <td>Hostname</td>
+        <td>{{node.hostname}}</td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>
+            <div ng-switch on="node.status">
+                <!-- TODO: Fix node.status so that is a boolean -->
+                <div ng-switch-when="true" style="color: green;">
+                    Running
+                </div>
+                <div ng-switch-default style="color: red;">
+                    Dead
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>IP</td>
+        <td>{{node.ip}}</td>
+    </tr>
+</table>

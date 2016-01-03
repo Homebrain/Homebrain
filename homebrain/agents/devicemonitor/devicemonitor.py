@@ -21,32 +21,44 @@ class DeviceMonitor(Agent):
         else:
             logging.log(logging.ERROR, "DeviceMonitor couldn't start, no default gateway available")
             self.stop()
+        self._known_devices = set()
+        self._connected_devices = set()
 
     def run(self):
-        known_devices = set()
         while self._enabled:
             time.sleep(5)
-            current_devices = self._active_devices()
-            connected_devices = current_devices - known_devices
-            disconnected_devices = known_devices - current_devices
+            current_devices = self._get_active_devices()
+            connected_devices = current_devices - self._connected_devices
+            disconnected_devices = self._connected_devices - current_devices
 
             for (ip, hostname) in connected_devices:
-                data = {'data': {'action': 'connected', 'device': hostname}}
+                data = {'data': {'status': 'connected', 'hostname': hostname}}
                 self.dispatcher.put_event(Event(type='device_connection', data=data))
                 logging.log(logging.INFO, 'device_connection: '+str(data))
 
             for (ip, hostname) in disconnected_devices:
-                data = {'data': {'action': 'disconnected', 'device': hostname}}
+                data = {'data': {'status': 'disconnected', 'hostname': hostname}}
                 self.dispatcher.put_event(Event(type='device_connection', data=data))
                 logging.log(logging.INFO, 'device_connection: '+str(data))
 
-            known_devices = current_devices
+            self._known_devices = set(list(self._known_devices) + list(current_devices))
+            self._connected_devices = current_devices
 
-    def _active_devices(self):
+    def _get_active_devices(self):
         pool = ThreadPool(5)
         hosts = list(map(lambda h: str(h), self.network.hosts()))
         devices = pool.map(_is_active, hosts)
         return set(filter(None, devices))
+
+    @property
+    def known_devices(self):
+        devices = {}
+        for item in self._known_devices:
+            connected = False
+            if item in self._connected_devices:
+                connected = True
+            devices[item[1]] = {'ip': item[0], 'hostname':item[1], 'status': connected}
+        return devices
 
 def _is_active(ip):
     try:

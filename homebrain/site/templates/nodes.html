@@ -14,7 +14,7 @@
                 <th>IP</th>
             </tr>
             <tr ng-repeat="node in nodes">
-                <td><a href="/nodes/{{node.name}}">{{node.name}}</a></td>
+                <td><a href="/nodes/{{node.hostname}}">{{node.hostname}}</a></td>
                 <td>
                     <div ng-switch on="node.status">
                         <!-- TODO: Fix node.status so that is a boolean -->

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+import logging
 from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
+from homebrain.agents.devicemonitor import DeviceMonitor
 from flask import Flask, Response, request, json, make_response
 
 
@@ -59,20 +61,31 @@ class RestListener(Agent):
         #	WEB API
         #
 
-        # Static dummy dict
-        nodes = {'node1': {'name': 'dummynode1', 'status': True, 'ip': '192.168.1.3'},
-                 'node2': {'name': 'dummynode2', 'status': False, 'ip': '192.168.1.4'}}
-
         @self.app.route("/api/v0/nodes")
         def get_nodes():
-            return json.dumps(nodes)
+            devicemonitor = None
+            for agent in AgentManager().agents:
+                if agent.__class__.__name__ is DeviceMonitor.__name__:
+                    devicemonitor = agent
+            if not devicemonitor or not devicemonitor.enabled:
+                return make_response("DeviceMonitor is not running, cannot fetch nodes", 500)
+            else:
+                return json.dumps(devicemonitor.known_devices)
 
         @self.app.route("/api/v0/nodes/<node_id>")
         def get_agent(node_id):
-            if node_id in nodes:
-                return json.dumps(nodes[node_id])
+            devicemonitor = None
+            for agent in AgentManager().agents:
+                if agent.__class__.__name__ is DeviceMonitor.__name__:
+                    devicemonitor = agent
+            if not devicemonitor or not devicemonitor.enabled:
+                return make_response("DeviceMonitor is not running, cannot fetch nodes", 500)
             else:
-                return make_response("Resource not found", 400)
+                devices = devicemonitor.known_devices
+                if node_id in devices:
+                    return json.dumps(devices[node_id])
+                else:
+                    return make_response("Resource not found", 400)
 
         @self.app.route("/api/v0/agents")
         def get_agents():

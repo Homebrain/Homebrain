@@ -85,18 +85,24 @@ app.controller("HomeCtrl", function($scope, $resource) {
         $scope.agents = agents;
         $scope.agentsenabled = Object.keys($scope.agents).length-2;
         // Get running agents count
-        var c = 0
-        for (node in $scope.agents) {
+        var agentc = 0;
+        for (agent in $scope.agents) {
             // TODO: Don't represent node status as a string when the string only represents a boolean
-            if ($scope.agents[node].status == true)
-                c++;
+            if ($scope.agents[agent].status == true)
+                agentc++;
         }
-        $scope.agentsrunning = c;
+        $scope.agentsrunning = agentc;
     });
     var Nodes = $resource("/api/v0/nodes");
     Nodes.get("", function(nodes){
         $scope.nodes = nodes;
-        $scope.nodec = Object.keys($scope.nodes).length-2;
+        var nodec = 0;
+        for (node in $scope.nodes){
+            // TODO: Don't represent node status as a string when the string only represents a boolean
+            if ($scope.nodes[node].status == true)
+                nodec++
+        }
+        $scope.nodesavailable = nodec;
     });
 });
 
