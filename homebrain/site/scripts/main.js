@@ -43,7 +43,7 @@ app.controller("LogWindowCtrl", function($scope, $route, $routeParams, $location
     $scope.messages = [];
     $scope.showLog = false;
 
-    var wsSocket = new WebSocket("ws://127.0.0.1:20445");
+    var wsSocket = new WebSocket("ws://127.0.0.1:5601");
 
     wsSocket.onopen = function (event) {
         console.info("Websocket opened!");

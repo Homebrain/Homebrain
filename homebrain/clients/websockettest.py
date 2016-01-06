@@ -20,7 +20,7 @@ def on_open(ws):
     ws.send(json.dumps(msg))
 
 if __name__ == "__main__":
-    ws = websocket.WebSocketApp("ws://127.0.0.1:20445/",
+    ws = websocket.WebSocketApp("ws://127.0.0.1:5601/",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)

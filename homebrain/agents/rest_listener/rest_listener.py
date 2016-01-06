@@ -119,7 +119,7 @@ class RestListener(Agent):
             return json.dumps(chains)
 
     def run(self):
-        self.app.run(host='0.0.0.0', port=20444, debug=False)
+        self.app.run(host='0.0.0.0', port=5600, debug=False)
 
     def stop(self):
         func = request.environ.get('werkzeug.server.shutdown')

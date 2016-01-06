@@ -33,4 +33,4 @@ def post_event():
     return ""
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False, port=20444)
+    app.run(host='0.0.0.0', debug=False, port=5602)

@@ -44,8 +44,8 @@ def start():
     from .agents.lamphandler.lamphandler import LampHandler
     from .agents.ttshandler.ttshandler import TTSHandler
     # Initialize local clients
-    locallamp = LampHandler("http://127.0.0.1:9090")
-    localtts  = TTSHandler ("http://127.0.0.1:9092")
+    locallamp = LampHandler("http://127.0.0.1:5602")
+    localtts  = TTSHandler ("http://127.0.0.1:5603")
     # Toggle local light with "lightbin1"
     d.chain("button", IDFilter("lightbtn1"), locallamp)
     # Toggle local TTS with "ttsbtn1"

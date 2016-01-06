@@ -10,7 +10,7 @@ class WebSocket(Agent):
     def __init__(self):
         super(WebSocket, self).__init__()
         self.target = self.identifier
-        self.server = WebsocketServer(20445)
+        self.server = WebsocketServer(5601)
         self.wsThread = threading.Thread(target=self.server.run_forever)
         self.clients = self.server.clients
         self.subscriptions = []
