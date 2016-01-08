@@ -25,15 +25,19 @@ class WebSocket(Agent):
 
         @self.server.set_fn_message_received
         def message_received(client, server, msg):
-            event = json.loads(msg)
-            event_type = event["type"]
-            event_data = event["data"]
-            if event_type == "subscribe":
-                self._subscribe(client, event_data)
-            elif event_type == "unsubscribe":
-                self._unsubscribe(client, msg)
-            else:
-                Dispatcher().put_event(Event(type=event_type, data=event_data))
+            if msg:
+                try:
+                    event = json.loads(msg)
+                    event_type = event["type"]
+                    event_data = event["data"]
+                    if event_type == "subscribe":
+                        self._subscribe(client, event_data)
+                    elif event_type == "unsubscribe":
+                        self._unsubscribe(client, msg)
+                    else:
+                        Dispatcher().put_event(Event(type=event_type, data=event_data))
+                except json.decoder.JSONDecodeError as e:
+                    pass
 
     def run(self):
         self.wsThread.start()
