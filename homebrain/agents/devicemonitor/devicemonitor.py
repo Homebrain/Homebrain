@@ -81,9 +81,12 @@ class DeviceMonitor(Agent):
 def _is_active(ip):
     try:
         (hostname, aliaslist, ipaddrlist) = socket.gethostbyaddr(ip)
-        return (ip, hostname)
+        response = os.system("ping -c 1 -t 1 " + ip + " > /dev/null 2>&1")
+        if response == 0:
+            return (ip, hostname)
     except socket.herror:
-        return None
+        pass
+    return None
 
 def _ports_open(ip):
     #print(ip)
