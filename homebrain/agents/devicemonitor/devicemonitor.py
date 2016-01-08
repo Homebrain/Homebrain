@@ -13,6 +13,7 @@ class DeviceMonitor(Agent):
         super(DeviceMonitor, self).__init__()
         self.target = target if target is not None else self.identifier
         self.dispatcher = Dispatcher()
+        self.threadpool = ThreadPool(5)
         self.updateinterval = 30
 
         default_gateway = netifaces.gateways()['default']
@@ -63,15 +64,13 @@ class DeviceMonitor(Agent):
             start_time = time.time()
 
     def _get_active_devices(self):
-        pool = ThreadPool(5)
         hosts = list(map(lambda h: str(h), self.network.hosts()))
-        devices = pool.map(_is_active, hosts)
+        devices = self.threadpool.map(_is_active, hosts)
         return set(filter(None, devices))
 
     def _get_open_ports(self):
-        pool = ThreadPool(5)
         hosts = list(map(lambda h: str(h), self._known_devices))
-        portdevices = pool.map(_ports_open, hosts)
+        portdevices = self.threadpool.map(_ports_open, hosts)
         return portdevices
 
     @property
