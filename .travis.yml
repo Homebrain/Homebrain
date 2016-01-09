@@ -5,7 +5,8 @@ python:
     - 3.2
     - 3.3
     - 3.4
-    - pypy3
+    - 3.5
+    - nightly
 
 before_install:
     - pip3 install nose
