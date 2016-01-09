@@ -1,0 +1,21 @@
+language: python
+sudo: false
+
+python:
+    - 3.2
+    - 3.3
+    - 3.4
+    - pypy3
+
+before_install:
+    - PATH="$HOME/.local/bin:$PATH"
+    - pip3 install --user nose
+
+install:
+    - pip3 install --user -e ./
+
+before_script:
+    - true
+
+script:
+    - nosetests tests
