@@ -8,11 +8,10 @@ python:
     - pypy3
 
 before_install:
-    - PATH="$HOME/.local/bin:$PATH"
-    - pip3 install --user nose
+    - pip3 install nose
 
 install:
-    - pip3 install --user -e ./
+    - pip3 install -e ./
 
 before_script:
     - true
