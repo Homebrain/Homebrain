@@ -1,4 +1,5 @@
 from homebrain import Agent, Event
+import logging
 import requests
 
 class LampHandler(Agent):
@@ -11,5 +12,8 @@ class LampHandler(Agent):
 
     def handle_event(self, event):
         outgoing_event = Event(type="lamp", data={'action': 'toggle'})
-        requests.request("POST", self.lampurl,
-                         json=outgoing_event.to_json())
+        try:
+            requests.request("POST", self.lampurl,
+                             json=outgoing_event.to_json())
+        except Exception as e:
+            logging.error("Unable to send lampevent to lamp:\n" + str(e))
