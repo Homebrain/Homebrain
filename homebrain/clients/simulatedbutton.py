@@ -1,10 +1,32 @@
 #!/usr/bin/env python3
 
-import requests
+import sys, time
 import json
+from socket import *
 
-jsn = json.dumps({"id": "lightbtn1",
-                  "type": "button",
-                  "data":{"action": "pressed"}})
+sock = socket(AF_INET, SOCK_DGRAM)
+sock.bind(('', 0))
+sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 
-requests.request("POST", "http://127.0.0.1:5600/api/v0/event", json=jsn)
+print(	"Choose the buttonid:\n"+
+		"1: lightbtn1\n"+
+		"2: ttsbtn1\n"+
+		"3: custom")
+choice=input("> ")
+eventid=""
+if choice=="1":
+	eventid="lightbtn1"
+elif choice=="2":
+	eventid="ttsbtn1"
+elif choice=="3":
+	eventid=input(">> ")
+else:
+	print("Invalid choice")
+	exit()
+
+data = json.dumps({ "id": eventid,
+                    "type": "button",
+                    "data":{"action": "pressed"}})
+
+
+sock.sendto(bytes(data, 'UTF-8'), ('<broadcast>', 5302))
