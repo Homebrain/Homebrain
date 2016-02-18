@@ -2,19 +2,20 @@
 
 Control and monitor your home on your own terms.
 
-[ ![Codeship Status for ErikBjare/Homebrain](https://codeship.com/projects/95112e30-60ec-0132-76d7-02eb9615503b/status?branch=master)](https://codeship.com/projects/51704)
+[![Build Status](https://travis-ci.org/Homebrain/Homebrain.svg)](https://travis-ci.org/Homebrain/Homebrain) [![Codeship Status for ErikBjare/Homebrain](https://codeship.com/projects/95112e30-60ec-0132-76d7-02eb9615503b/status?branch=master)](https://codeship.com/projects/51704)
 
 
 ## Usage
 
 ### Installation
 
-Install dependencies with `python3 setup.py install`, if you are going to develop run `python3 setup.py develop` instead ([Why?](http://stackoverflow.com/questions/19048732/python-setup-py-develop-vs-install)).
+Download/clone the project and install it with `pip3 install ./` (packages will be available at a later date).
+
+If you are going to develop you might want to run `pip3 install -e ./` instead ([Why?](http://stackoverflow.com/questions/19048732/python-setup-py-develop-vs-install)).
 
 ### Running it
 
-Run with `homebrain`
-
+Once you've installed it, simply run with `homebrain`.
 
 ## Development
 

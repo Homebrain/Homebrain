@@ -43,7 +43,7 @@ app.controller("LogWindowCtrl", function($scope, $route, $routeParams, $location
     $scope.messages = [];
     $scope.showLog = false;
 
-    var wsSocket = new WebSocket("ws://127.0.0.1:20445");
+    var wsSocket = new WebSocket("ws://"+window.location.hostname+":5601");
 
     wsSocket.onopen = function (event) {
         console.info("Websocket opened!");
@@ -85,18 +85,24 @@ app.controller("HomeCtrl", function($scope, $resource) {
         $scope.agents = agents;
         $scope.agentsenabled = Object.keys($scope.agents).length-2;
         // Get running agents count
-        var c = 0
-        for (node in $scope.agents) {
+        var agentc = 0;
+        for (agent in $scope.agents) {
             // TODO: Don't represent node status as a string when the string only represents a boolean
-            if ($scope.agents[node].status == true)
-                c++;
+            if ($scope.agents[agent].status == true)
+                agentc++;
         }
-        $scope.agentsrunning = c;
+        $scope.agentsrunning = agentc;
     });
     var Nodes = $resource("/api/v0/nodes");
     Nodes.get("", function(nodes){
         $scope.nodes = nodes;
-        $scope.nodec = Object.keys($scope.nodes).length-2;
+        var nodec = 0;
+        for (node in $scope.nodes){
+            // TODO: Don't represent node status as a string when the string only represents a boolean
+            if ($scope.nodes[node].status == true)
+                nodec++
+        }
+        $scope.nodesavailable = nodec;
     });
 });
 
@@ -113,7 +119,7 @@ app.controller("AgentListCtrl", function($scope, $resource, $routeParams) {
 app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
     var Nodes = $resource("/api/v0/nodes");
     Nodes.get("", function(nodes){
-        console.log(nodes)
+        //console.log(nodes)
         $scope.nodes = nodes;
     })
 });
@@ -121,9 +127,9 @@ app.controller("NodesCtrl", function($scope, $resource, $routeParams) {
 app.controller("NodeCtrl", function($scope, $resource, $routeParams) {
     var Node = $resource("/api/v0/nodes/"+$routeParams.id);
 
-    console.log($routeParams)
+    //console.log($routeParams)
     Node.get("", function(node){
-        console.log(node)
+        //console.log(node)
         $scope.node = node;
     })
 });
@@ -132,7 +138,7 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
     var Agents = $resource("/api/v0/agents");
     Agents.get("", function(agents){
         agent = agents[$routeParams.id];
-        console.log(agent);
+        //console.log(agent);
         $scope.agent = agent;
     })
 });
@@ -140,7 +146,7 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
 app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
     var Agents = $resource("/api/v0/agents");
     Agents.get("", function(agents){
-        console.log(agents)
+        //console.log(agents)
         $scope.agents = agents;
     })
     var Chains = $resource("/api/v0/chains");
@@ -158,19 +164,19 @@ app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
             else {
                 for (var key in pos){
                     traversed.push(key);
-                    console.log(traversed);
+                    //console.log(traversed);
                     traverse(pos[key]);
                 }
             }
             traversed.pop();
         }
         traverse(chains);
-        console.log(strarr)
+        //console.log(strarr)
         $scope.chains = strarr;
     })
     var Modules = $resource("/api/v0/modules");
     Modules.get("", function(modules){
-        console.log(modules)
+        //console.log(modules)
         $scope.modules = modules;
     })
 });

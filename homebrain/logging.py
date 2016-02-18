@@ -31,7 +31,7 @@ class EventLogHandler(logging.Handler):
     def handle(self, record):
         event = {"type": "logmsg",
                  "data": {
-                     "level": record.levelname,
+                     "level": record.levelname.lower(),
                      "msg": record.getMessage()
                 }}
         Dispatcher().put_event(Event(type="logmsg", data=event["data"]))
