@@ -3,8 +3,8 @@ import logging
 from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
 from homebrain.agents.devicemonitor import DeviceMonitor
+import flask
 from flask import Flask, Response, request, json, make_response
-
 
 # PROPOSAL: Make a core component (not an agent) with a separate agent that
 #           hooks the core component allowing for communication via an API
@@ -41,7 +41,7 @@ class RestListener(Agent):
         @self.app.route("/")
         @self.app.route("/<_>")
         @self.app.route("/<_>/<__>")
-        @self.app.route("/<_>/<__>/<___>")
+        #@self.app.route("/<_>/<__>/<___>")
         def index(**_):
             return self.app.send_static_file("index.html")
 
@@ -56,6 +56,12 @@ class RestListener(Agent):
         @self.app.route("/templates/<filename>")
         def templates(filename):
             return self.app.send_static_file("templates/" + filename)
+
+        # Agent specific static files
+        @self.app.route("/agent/<agent>/<filename>")
+        def agentfile(agent, filename):
+            agentfolder = filelocation = get_cwd()+"/agents/"+agent.lower()+"/site/"
+            return flask.send_from_directory(agentfolder, filename)
 
         #
         #	WEB API
