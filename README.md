@@ -37,3 +37,7 @@ You will then find the built docs in `docs/_build/index.html`.
 The most convenient way to run the tests is with nose. Install with `pip3 install nose` and run with `nosetests` from the root directory of the project.
 
 Tests are run automatically on Codeship (see the badge near the top of the README).
+
+--------------
+
+Copyright (c) 2015 The Homebrain Developers, released under the MIT license.
