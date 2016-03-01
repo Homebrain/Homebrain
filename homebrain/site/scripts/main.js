@@ -141,6 +141,13 @@ app.controller("AgentCtrl", function($scope, $resource, $routeParams) {
         //console.log(agent);
         $scope.agent = agent;
     })
+    $scope.getConfigLocation = function (){
+        var classname = $routeParams.id.split("[")[0];
+        var url = "/agent/"+classname+"/index.html";
+        console.log(classname);
+        console.log(url);
+        return url;
+    }
 });
 
 app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {

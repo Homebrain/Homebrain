@@ -3,8 +3,8 @@ import logging
 from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
 from homebrain.agents.devicemonitor import DeviceMonitor
+import flask
 from flask import Flask, Response, request, json, make_response
-
 
 # PROPOSAL: Make a core component (not an agent) with a separate agent that
 #           hooks the core component allowing for communication via an API
@@ -20,19 +20,6 @@ class RestListener(Agent):
         self.target = self.identifier
         self.dispatcher = Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
-
-        #
-        #    EVENT API
-        #
-        @self.app.route("/api/v0/event", methods=["POST"])
-        def post_event():
-            msg = request.json
-            if type(msg) is str:
-                event = json.loads(msg)
-            else:
-                event = msg
-            self.dispatcher.put_event(event)
-            return ""
 
         #
         #   HTTP Static Files
@@ -57,10 +44,17 @@ class RestListener(Agent):
         def templates(filename):
             return self.app.send_static_file("templates/" + filename)
 
+        # Agent specific static files
+        @self.app.route("/agent/<agent>/<filename>")
+        def agentfile(agent, filename):
+            agentfolder = filelocation = get_cwd()+"/agents/"+agent.lower()+"/site/"
+            return flask.send_from_directory(agentfolder, filename)
+
         #
         #	WEB API
         #
 
+        # TODO: Rename resource to devices
         @self.app.route("/api/v0/nodes")
         def get_nodes():
             devicemonitor = None
@@ -117,6 +111,18 @@ class RestListener(Agent):
                             prelink[i] = {}
                         prelink = prelink[i]
             return json.dumps(chains)
+
+        """EVENT API"""
+
+        @self.app.route("/api/v0/event", methods=["POST"])
+        def post_event():
+            msg = request.json
+            if type(msg) is str:
+                event = json.loads(msg)
+            else:
+                event = msg
+            self.dispatcher.put_event(event)
+            return ""
 
     def run(self):
         self.app.run(host='0.0.0.0', port=5600, debug=False)

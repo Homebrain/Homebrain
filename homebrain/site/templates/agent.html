@@ -1,23 +1,36 @@
 <h2>{{agent.name}}</h2>
 
-<div>ID: {{agent.id}}</div>
+<table class="table table-hover table-bordered" style="margin-bottom: 0px;">
+    <tr>
+        <td>ID</td>
+        <td>{{agent.id}}</td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>
+            <span ng-switch on="agent.enabled">
+                <span ng-switch-when="true" style="color: green;">Enabled</span>
+                <span ng-switch-default style="color: red;">Disabled</span>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>
+            <span ng-switch on="agent.status">
+                <span ng-switch-when="true" style="color: green;"> Running </span>
+                <span ng-switch-default style="color: red;"> Dead </span>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td>Queuesize</td>
+        <td>{{agent.queue_size}}</td>
+    </tr>
+    <tr>
+        <td>Processed events</td>
+        <td>{{agent.processed_events}}</td>
+    </tr>
+</table>
 
-<div ng-switch on="agent.status">
-    Status:
-    <span ng-switch on="agent.enabled">
-        <span ng-switch-when="true" style="color: green;">Enabled</span>
-        <span ng-switch-default style="color: red;">Disabled</span>
-    </span>
-    and
-    <span ng-switch on="agent.status">
-        <span ng-switch-when="true" style="color: green;">
-            Running
-        </span>
-        <span ng-switch-default style="color: red;">
-            Dead
-        </span>
-    </span>
-</div>
-
-<div>Queuesize: {{agent.queue_size}}</div>
-<div>Processed events: {{agent.processed_events}}</div>
+<div ng-include="getConfigLocation()">No config available?</div>
