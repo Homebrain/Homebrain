@@ -1,0 +1,3 @@
+[submodule "homebrain/agents/milight"]
+	path = homebrain/agents/milight
+	url = git@github.com:Homebrain/homebrain-milight.git
