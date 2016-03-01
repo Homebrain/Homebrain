@@ -22,26 +22,13 @@ class RestListener(Agent):
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
         #
-        #    EVENT API
-        #
-        @self.app.route("/api/v0/event", methods=["POST"])
-        def post_event():
-            msg = request.json
-            if type(msg) is str:
-                event = json.loads(msg)
-            else:
-                event = msg
-            self.dispatcher.put_event(event)
-            return ""
-
-        #
         #   HTTP Static Files
         #
 
         @self.app.route("/")
         @self.app.route("/<_>")
         @self.app.route("/<_>/<__>")
-        #@self.app.route("/<_>/<__>/<___>")
+        @self.app.route("/<_>/<__>/<___>")
         def index(**_):
             return self.app.send_static_file("index.html")
 
@@ -67,6 +54,7 @@ class RestListener(Agent):
         #	WEB API
         #
 
+        # TODO: Rename resource to devices
         @self.app.route("/api/v0/nodes")
         def get_nodes():
             devicemonitor = None
@@ -123,6 +111,18 @@ class RestListener(Agent):
                             prelink[i] = {}
                         prelink = prelink[i]
             return json.dumps(chains)
+
+        """EVENT API"""
+
+        @self.app.route("/api/v0/event", methods=["POST"])
+        def post_event():
+            msg = request.json
+            if type(msg) is str:
+                event = json.loads(msg)
+            else:
+                event = msg
+            self.dispatcher.put_event(event)
+            return ""
 
     def run(self):
         self.app.run(host='0.0.0.0', port=5600, debug=False)
