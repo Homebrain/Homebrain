@@ -31,11 +31,12 @@ class Dispatcher(Agent):
 
     def chain(self, initial_trigger, *args):
         """Chains together a sequence of agents such that each one listens to the preceding one's event,
-        and outputs an event the following agent will listen to."""
+        and outputs an event to the next agent one in the chain if any."""
         # TODO: Needs better documentation
         trigger = initial_trigger
         for agent in args:
             self.bind(agent, trigger)
             trigger = "{}->{}".format(trigger, agent.identifier)
+            # FIXME: I don't like assignment to non-self object attributes, please explain/fix  //erb
             agent.target = trigger
         AgentManager().add_agents(args)
