@@ -5,6 +5,7 @@ homebrain/logs
 venv/
 build/
 dist/
+testing/
 
 # Python specific
 __pycache__
