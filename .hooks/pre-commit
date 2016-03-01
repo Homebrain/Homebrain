@@ -2,7 +2,11 @@
 
 PROJECT_DIR=$(git rev-parse --show-toplevel)
 
-TEST_OUTPUT=$(nosetests3 "$PROJECT_DIR/tests")
+
+hash nosetests3 2>/dev/null && NOSECMD="nosetests3"
+hash nosetests 2>/dev/null && NOSECMD="nosetests"
+
+TEST_OUTPUT=$($NOSECMD "$PROJECT_DIR/tests")
 TEST_EXIT_CODE=$?
 
 

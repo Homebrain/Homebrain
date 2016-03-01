@@ -5,6 +5,7 @@ homebrain/logs
 venv/
 build/
 dist/
+testing/
 
 # Python specific
 __pycache__
@@ -14,12 +15,13 @@ __pycache__
 # IDE/editor specific
 .idea/
 *.swp
+*~
 
 # Documentation specific
 docs/_build
 
 # Also ignoring these, at least for now.
-docs/Makefile 
+docs/Makefile
 docs/make.bat
 
 # In case we get node/bower deps on the site-files in the future
