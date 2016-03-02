@@ -1,6 +1,6 @@
 # Import the agent class
-# from . import TemplateAgent
+#from .agenttemplate import AgentTemplate
 
 # Agent class to start
-# agentclass = TemplateAgent
-# autostart = False
+#agentclass = AgentTemplate
+#autostart = False
