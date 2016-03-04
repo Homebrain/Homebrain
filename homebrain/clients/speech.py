@@ -12,12 +12,10 @@ import json
 import requests
 app = Flask(__name__)
 
+import hbcutils
+
 
 localport = str(int(5610+20*random.random()))
-
-remoteip = None
-remoteport = None
-
 
 ERROR_MSG_ESPEAK_MISSING = """Could not find espeak
 Or please install it or if it is already installed, please add its directory to your environment variable"""
@@ -87,6 +85,7 @@ if __name__ == "__main__":
     if not is_espeak_installed():
         print("espeak is not installed")
     else:
-        listen_for_homebrain()
+        remoteip, remoteport = hbcutils.listen_for_homebrain()
         if remoteip and remoteport:
+            add_tts()
             app.run(host='0.0.0.0', debug=False, port=localport)
