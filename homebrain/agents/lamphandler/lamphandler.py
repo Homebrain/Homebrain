@@ -5,9 +5,10 @@ import requests
 class LampHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
 
-    def __init__(self, lampurl, target=None):
+    def __init__(self, lampid, lampurl, target=None):
         super(LampHandler, self).__init__()
         self.target = target if target is not None else self.identifier
+        self.id = lampid
         self.lampurl = lampurl
 
     def handle_event(self, event):

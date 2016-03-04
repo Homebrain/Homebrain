@@ -32,24 +32,8 @@ def start():
     autostarted = mm.start_autostart_agents()
     AgentManager().add_agents(autostarted)
 
-    # TODO: Integrate this better into the rest of the system
-    d = Dispatcher()
-    d.start()
-
-    # run simulated demo agents
-    #run_chunker_example(d, am)
-
-    # Button with IDFilter example
-    from .agents.idfilter.idfilter import IDFilter
-    from .agents.lamphandler.lamphandler import LampHandler
-    from .agents.ttshandler.ttshandler import TTSHandler
-    # Initialize local clients
-    locallamp = LampHandler("http://127.0.0.1:5602")
-    localtts  = TTSHandler ("http://127.0.0.1:5603")
-    # Toggle local light with "lightbin1"
-    d.chain("button", IDFilter("lightbtn1"), locallamp)
-    # Toggle local TTS with "ttsbtn1"
-    d.chain("button", IDFilter("ttsbtn1"), localtts)
+    # Start the dispatcher
+    Dispatcher().start()
 
     # Start Loggers
     am.start_agents()

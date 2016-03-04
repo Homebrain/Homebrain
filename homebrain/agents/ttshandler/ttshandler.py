@@ -5,10 +5,11 @@ import requests
 
 class TTSHandler(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
-    def __init__(self, ttsurl, target=None):
+    def __init__(self, ttsid, ttsurl, target=None):
         super(TTSHandler, self).__init__()
         self.target = target if target is not None else self.identifier
         self.ttsurl = ttsurl
+        self.id = ttsid
 
     @stop_on_shutdown_event
     @log_exceptions
