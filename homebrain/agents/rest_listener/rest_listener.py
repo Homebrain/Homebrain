@@ -2,7 +2,7 @@
 import logging
 from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
-from homebrain.agents.devicemonitor import DeviceMonitor
+from devicemonitor import DeviceMonitor
 import flask
 from flask import Flask, Response, request, json, make_response
 

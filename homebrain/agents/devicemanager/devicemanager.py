@@ -1,9 +1,9 @@
 from homebrain import Agent, Dispatcher, AgentManager
 from homebrain.core.decorators import stop_on_shutdown_event
 
-from homebrain.agents.lamphandler import LampHandler
-from homebrain.agents.ttshandler import TTSHandler
-from homebrain.agents.idfilter import IDFilter
+from lamphandler import LampHandler
+from ttshandler import TTSHandler
+from idfilter import IDFilter
 
 import logging
 
