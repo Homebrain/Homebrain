@@ -14,24 +14,18 @@ class ModuleManager:
     def __init__(self):
         self._modules = []    # type: []
         self._import_all()
+        self._add_autostart_agents()
+
 
     @property
     def modules(self) -> []:
         """ Contains the set loaded agent modules """
         return self._modules
 
-    def start_autostart_agents(self):
-        """ Starts all agents with autostart set to true """
-        # Find and start all autostart modules
-        startedagents = []
-        for module in self.modules:
-            if hasattr(module, 'autostart') and module.autostart == True:
-                startedagents.append(module.agentclass())
-        logging.info("Started " + str(len(startedagents)) + " listener agents")
-        return startedagents
 
     def _include_folder(self, path):
         sys.path.insert(0, path) # Allows importlib to import from the agents directory
+
 
     def _import_folder(self, path):
         moduledirs = os.listdir(path) # Lists all folders in the agents directory
@@ -45,6 +39,7 @@ class ModuleManager:
                 # If autostart is not set for module, default to false
                 if not hasattr(module, 'autostart'):
                     module.autostart = False
+
 
     def _import_all(self):
         """ Imports all agents, returns an array of all loaded modules """
@@ -78,6 +73,17 @@ class ModuleManager:
             logging.warning("ModuleManager: Users private agent directory does not exist '{}'".format(useragentdir))
 
         logging.info("Loaded " + str(len(self._modules)) + " modules")
+
+
+    def _add_autostart_agents(self):
+        """ Starts all agents with autostart set to true """
+        # Find and start all autostart modules
+        autostartagents = []
+        for module in self.modules:
+            if hasattr(module, 'autostart') and module.autostart == True:
+                autostartagents.append(module.agentclass())
+        AgentManager().add_agents(autostartagents)
+        logging.info("Started " + str(len(autostartagents)) + " listener agents")
 
 
     def import_module(self, module_name: str):

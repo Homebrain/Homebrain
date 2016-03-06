@@ -33,9 +33,6 @@ def start():
 
     # Initialize ModuleManager for the first time (it's a singleton)
     mm = ModuleManager()
-    # Start all autostart agents
-    autostarted = mm.start_autostart_agents()
-    AgentManager().add_agents(autostarted)
 
     # Start the dispatcher
     Dispatcher().start()

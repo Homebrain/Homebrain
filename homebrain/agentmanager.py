@@ -5,8 +5,6 @@ from typing import Set, List, Iterable
 from .core import Agent
 from .utils import Singleton
 
-from .modulemanager import ModuleManager
-
 @Singleton
 class AgentManager:
     def __init__(self):
