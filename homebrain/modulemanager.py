@@ -55,7 +55,7 @@ class ModuleManager:
 
         # Get user agent folder
         useragentdir = ""
-        if user == "homebrain" or user == "root":
+        if user == "homebrain":
             useragentdir = "/var/lib/homebrain/agents/"
         else:
             homedir = os.path.expanduser("~")

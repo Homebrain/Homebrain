@@ -3,6 +3,7 @@ import logging
 import argparse
 from time import sleep
 import traceback
+import getpass
 
 from .dispatcher import Dispatcher
 from . import AgentManager, ModuleManager
@@ -16,6 +17,10 @@ def run_chunker_example(dispatcher, am):
 
 
 def start():
+    if getpass.getuser() == "root":
+        print("Homebrain should not be run as root, exiting")
+        exit()
+
     parser = argparse.ArgumentParser(description='The brain of your home')
     parser.add_argument('--debug', action='store_true', help='Sets loglevel to debug')
     args = parser.parse_args()
