@@ -9,6 +9,9 @@ from multiprocessing.pool import ThreadPool
 from homebrain import Agent, Event, Dispatcher
 
 class DeviceMonitor(Agent):
+
+    autostart = True
+
     def __init__(self, target=None, netmask=24):
         super(DeviceMonitor, self).__init__()
         # Initialize values

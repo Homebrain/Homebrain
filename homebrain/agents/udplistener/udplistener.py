@@ -7,6 +7,9 @@ import select, socket
 
 class UDPListener(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
+
+    autostart = True
+
     def __init__(self, target=None):
         super(UDPListener, self).__init__()
         self.target = target if target is not None else self.identifier

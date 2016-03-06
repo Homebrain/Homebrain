@@ -15,6 +15,9 @@ from flask import Flask, Response, request, json, make_response
 # TODO: Change to a better name
 
 class RestListener(Agent):
+
+    autostart = True
+
     def __init__(self):
         super(RestListener, self).__init__()
         self.target = self.identifier
@@ -92,9 +95,9 @@ class RestListener(Agent):
         def get_modules():
             modules = {}
             for module in ModuleManager().modules:
-                modules[module.agentclass.__name__] = {
-                    "name": module.agentclass.__name__,
-                    "autostart": module.autostart }
+                modules[module.__name__] = {
+                    "name": module.__name__,
+                    "autostart": module.autostart}
             return json.dumps(modules)
 
         @self.app.route('/api/v0/chains')

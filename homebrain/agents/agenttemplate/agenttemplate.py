@@ -3,6 +3,9 @@ from homebrain.core.decorators import stop_on_shutdown_event
 import logging
 
 class AgentTemplate(Agent):
+
+    autostart = False
+
     def __init__(self, target=None):
         super(AgentTemplate, self).__init__()
         self.target = target if target is not None else self.identifier

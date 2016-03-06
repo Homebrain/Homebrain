@@ -7,6 +7,9 @@ import json
 
 
 class WebSocket(Agent):
+
+    autostart = True
+
     def __init__(self):
         super(WebSocket, self).__init__()
         self.target = self.identifier

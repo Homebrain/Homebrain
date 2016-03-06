@@ -10,6 +10,9 @@ import logging
 from socket import *
 
 class BroadcastAgent(Agent):
+
+    autostart = True
+
     def __init__(self, target=None):
         super(BroadcastAgent, self).__init__()
         self.target = target if target is not None else self.identifier

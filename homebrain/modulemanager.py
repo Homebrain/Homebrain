@@ -5,6 +5,7 @@ import importlib
 import logging
 import traceback
 import getpass
+import inspect
 
 from .agentmanager import *
 from .utils import Singleton, get_cwd
@@ -12,15 +13,35 @@ from .utils import Singleton, get_cwd
 @Singleton
 class ModuleManager:
     def __init__(self):
-        self._modules = []    # type: []
+        self._modules = []
         self._import_all()
-        self._add_autostart_agents()
 
 
     @property
     def modules(self) -> []:
         """ Contains the set loaded agent modules """
         return self._modules
+
+
+    def import_module(self, module_name: str):
+        """ Tries to import a module, and returns the module object if it succeeds """
+        try:  # Import module
+            m = importlib.import_module(module_name)
+            # Iterate over all module variables
+            for name, aclass in inspect.getmembers(m):
+                # Find all Agents classes
+                if inspect.isclass(aclass) and issubclass(aclass, Agent):
+                    # Add agent to list of modules
+                    self._modules.append(aclass)
+                    # If autostart static variable is not defined, default to false
+                    aclass.autostart = getattr(aclass, 'autostart', False)
+                    # If autostart var is true, add agent to agentmanager for autostart
+                    if aclass.autostart:
+                        AgentManager().add_agent(aclass())
+        except Exception as e:
+            module = None
+            logging.error("Couldn't import module " + str(module_name) +
+                          "\n" + traceback.format_exc())
 
 
     def _include_folder(self, path):
@@ -32,13 +53,7 @@ class ModuleManager:
         self._include_folder(path)
 
         for moduledir in moduledirs:
-            module = self.import_module(moduledir)
-            if module and hasattr(module, 'agentclass'):
-                if hasattr(module, 'agentclass'):
-                    self._modules.append(module)
-                # If autostart is not set for module, default to false
-                if not hasattr(module, 'autostart'):
-                    module.autostart = False
+            agents = self.import_module(moduledir)
 
 
     def _import_all(self):
@@ -73,30 +88,3 @@ class ModuleManager:
             logging.warning("ModuleManager: Users private agent directory does not exist '{}'".format(useragentdir))
 
         logging.info("Loaded " + str(len(self._modules)) + " modules")
-
-
-    def _add_autostart_agents(self):
-        """ Starts all agents with autostart set to true """
-        # Find and start all autostart modules
-        autostartagents = []
-        for module in self.modules:
-            if hasattr(module, 'autostart') and module.autostart == True:
-                autostartagents.append(module.agentclass())
-        AgentManager().add_agents(autostartagents)
-        logging.info("Started " + str(len(autostartagents)) + " listener agents")
-
-
-    def import_module(self, module_name: str):
-        """ Tries to import a module, and returns the module object if it succeeds """
-        module = None
-        try:  # Import module
-            m = importlib.import_module(module_name)
-            if "autostart" in dir(m) and "agentclass" in dir(m):
-                module = m
-            else:
-                logging.error("Agentclass invalid in module " + module_name)
-        except Exception as e:
-            module = None
-            logging.error("Couldn't import agent " + str(module_name) +
-                          "\n" + traceback.format_exc())
-        return module

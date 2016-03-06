@@ -8,6 +8,9 @@ from idfilter import IDFilter
 import logging
 
 class DeviceManager(Agent):
+
+    autostart = True
+
     def __init__(self, target=None):
         super(DeviceManager, self).__init__()
         self.target = target if target is not None else self.identifier

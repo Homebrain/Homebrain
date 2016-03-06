@@ -3,6 +3,9 @@ import logging
 
 
 class LogListener(Agent):
+
+    autostart = True
+
     def __init__(self, target=None):
         super(LogListener, self).__init__()
         self.target = target if target is not None else self.identifier
