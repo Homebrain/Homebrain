@@ -41,13 +41,13 @@ class DeviceMonitor(Agent):
             lost_devices = available_devices - current_devices
 
             for (ip, hostname) in new_devices:
-                data = {'data': {'status': 'connected', 'hostname': hostname}}
-                self.dispatcher.put_event(Event(type='device_connection', data=data))
+                data = {'status': 'connected', 'hostname': hostname}
+                self.dispatcher.put_event(Event(tag='device_connection', data=data))
                 self._known_devices[hostname] = {'ip': ip, 'hostname': hostname, 'status': True, 'ports':[]}
 
             for (ip, hostname) in lost_devices:
-                data = {'data': {'status': 'disconnected', 'hostname': hostname}}
-                self.dispatcher.put_event(Event(type='device_connection', data=data))
+                data = {'status': 'disconnected', 'hostname': hostname}
+                self.dispatcher.put_event(Event(tag='device_connection', data=data))
                 self._known_devices[hostname]['status'] = False
 
             # Update available devices

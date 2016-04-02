@@ -30,6 +30,14 @@ class AgentManager:
         for agent in agents:
             self.add_agent(agent)
 
+    def get_agent(self, identifier):
+        # TODO: this is not optimal, should be redesigned
+        foundagent = None
+        for agent in agents:
+            if agent.id == identifier:
+                foundagent = agent
+        return foundagent
+
     @property
     def agents(self) -> Set[Agent]:
         """Contains the set of managed agents"""

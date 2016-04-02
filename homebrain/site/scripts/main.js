@@ -47,9 +47,9 @@ app.controller("LogWindowCtrl", function($scope, $route, $routeParams, $location
 
     wsSocket.onopen = function (event) {
         console.info("Websocket opened!");
-        msg1 = {"type": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a WebUI log websocket!"}};
+        msg1 = {"tag": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a WebUI log websocket!"}};
         wsSocket.send(JSON.stringify(msg1));
-        msg2 = {"type": "subscribe", "data": "logmsg"};
+        msg2 = {"tag": "subscribe", "data": "logmsg"};
         wsSocket.send(JSON.stringify(msg2));
     };
 

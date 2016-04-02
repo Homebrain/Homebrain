@@ -14,9 +14,9 @@ def on_close(ws):
     print("closing")
 
 def on_open(ws):
-    msg = {"type": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a websocket client!"}}
+    msg = {"tag": "log", "data": {"level": "info", "msg": "Hello Homebrain! I am a websocket client!"}}
     ws.send(json.dumps(msg))
-    msg = {"type": "subscribe", "data": "log"}
+    msg = {"tag": "subscribe", "data": "log"}
     ws.send(json.dumps(msg))
 
 if __name__ == "__main__":

@@ -25,8 +25,8 @@ else:
 	exit()
 
 data = json.dumps({ "id": eventid,
-                    "type": "button",
+                    "tag": "button",
                     "data":{"action": "pressed"}})
 
 
-sock.sendto(bytes(data, 'UTF-8'), ('<broadcast>', 5302))
+sock.sendto(bytes(data, 'UTF-8'), ('<broadcast>', 5602))

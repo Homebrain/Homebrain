@@ -31,14 +31,14 @@ class WebSocket(Agent):
             if msg:
                 try:
                     event = json.loads(msg)
-                    event_type = event["type"]
+                    event_tag = event["tag"]
                     event_data = event["data"]
-                    if event_type == "subscribe":
+                    if event_tag == "subscribe":
                         self._subscribe(client, event_data)
-                    elif event_type == "unsubscribe":
+                    elif event_tag == "unsubscribe":
                         self._unsubscribe(client, msg)
                     else:
-                        Dispatcher().put_event(Event(type=event_type, data=event_data))
+                        Dispatcher().put_event(Event(tag=event_tag, data=event_data))
                 except json.decoder.JSONDecodeError as e:
                     pass
 
@@ -49,10 +49,10 @@ class WebSocket(Agent):
     def _listener(self):
         while self.wsThread.isAlive():
             event = self.next_event()
-            event_type = event["type"]
+            event_tag = event["tag"]
             event_data = event["data"]
             for client in self.clients:
-                if event_type in client["subscriptions"]:
+                if event_tag in client["subscriptions"]:
                     self.server.send_message(client, json.dumps(event))
 
     def _subscribe(self, client, event_data):

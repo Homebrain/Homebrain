@@ -29,12 +29,12 @@ class EventLogHandler(logging.Handler):
         pass
 
     def handle(self, record):
-        event = {"type": "logmsg",
+        event = {"tag": "logmsg",
                  "data": {
                      "level": record.levelname.lower(),
                      "msg": record.getMessage()
                 }}
-        Dispatcher().put_event(Event(type="logmsg", data=event["data"]))
+        Dispatcher().put_event(Event(tag="logmsg", data=event["data"]))
 
 class FileLogHandler(logging.Handler):
     def __init__(self):

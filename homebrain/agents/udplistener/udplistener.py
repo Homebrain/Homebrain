@@ -29,5 +29,6 @@ class UDPListener(Agent):
                 event = json.loads(msg)
             else:
                 event = msg
-            if event["type"] != "broadcast":
+            # Change so it checks that its not from homebrain instead of just broadcast
+            if event["tag"] != "broadcast":
                 Dispatcher().put_event(event)

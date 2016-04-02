@@ -9,6 +9,9 @@ class Event(dict):
     def __init__(self, **kwargs):
         super(Event, self).__init__()
         self.update(kwargs)
+        # If type is not specified, use broadcast
+        if "type" not in self:
+            self["type"] = "broadcast"
 
     @property
     def type(self) -> str:

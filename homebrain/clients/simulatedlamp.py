@@ -14,14 +14,14 @@ lamp_state = False
 localport = str(int(5610+20*random.random()))
 
 def log(msg):
-    jsn = json.dumps({"type": "log",
+    jsn = json.dumps({"tag": "log",
                       "data": {"level": "info", "msg": msg}})
     requests.request("POST", "http://"+remoteip+":"+remoteport+"/api/v0/event", json=jsn)
 
 def add_lamp(remoteip, remoteport):
     localip = socket.gethostname()
-    jsn = json.dumps({ "type": "add_lamp",
-                       "data": { "id": "testlamp", "ip": localip, "port": str(localport)}})
+    jsn = json.dumps({ "tag": "add_client",
+        "data": { "ip": localip, "port": str(localport), "protocol": "http" , "tags": ["lamp"]}})
     requests.request("POST", "http://"+remoteip+":"+remoteport+"/api/v0/event", json=jsn)
 
 @app.route("/", methods=["POST"])

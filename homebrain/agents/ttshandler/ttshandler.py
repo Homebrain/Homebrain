@@ -8,17 +8,11 @@ class TTSHandler(Agent):
 
     autostart = False
 
-    def __init__(self, ttsid, ttsurl, target=None):
+    def __init__(self, client, target=None):
         super(TTSHandler, self).__init__()
         self.target = target if target is not None else self.identifier
-        self.ttsurl = ttsurl
-        self.id = ttsid
+        self.client = client
 
-    @stop_on_shutdown_event
-    @log_exceptions
     def handle_event(self, event):
-        outgoing_event = Event(type="tts", data={'msg': 'Button pressed'})
-        try:
-            requests.request("POST", self.ttsurl, json=outgoing_event.to_json())
-        except Exception as e:
-            logging.error("Unable to send ttsevent to ttsnode:\n" + str(e))
+        outgoing_event = Event(tag="tts", data={'msg': 'Button pressed'})
+        self.client.send(outgoing_event)

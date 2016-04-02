@@ -22,7 +22,7 @@ class Chunker(Agent):
         self.events.append(event)
         if len(self.events) >= self.count:
             Dispatcher().put_event(
-                Event(**{"type": self.target,
+                Event(**{"tag": self.target,
                          "data": self.events}))
             self.events = []
 

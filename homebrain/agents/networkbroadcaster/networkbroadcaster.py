@@ -21,7 +21,7 @@ class BroadcastAgent(Agent):
         self.sock.bind(('', 0))
         self.sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 
-        self.message = json.dumps({ "type": "broadcast",
+        self.message = json.dumps({ "tag": "broadcast",
                                     "data": {
                                         "ip": gethostbyname(gethostname()),
                                         "hostname": gethostname(),

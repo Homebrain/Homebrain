@@ -7,16 +7,11 @@ class LampHandler(Agent):
 
     autostart = False
 
-    def __init__(self, lampid, lampurl, target=None):
+    def __init__(self, lamp, target=None):
         super(LampHandler, self).__init__()
         self.target = target if target is not None else self.identifier
-        self.id = lampid
-        self.lampurl = lampurl
+        self.client = lamp
 
     def handle_event(self, event):
-        outgoing_event = Event(type="lamp", data={'action': 'toggle'})
-        try:
-            requests.request("POST", self.lampurl,
-                             json=outgoing_event.to_json())
-        except Exception as e:
-            logging.error("Unable to send lampevent to lamp:\n" + str(e))
+        outgoing_event = Event(tag="lamp", data={'action': 'toggle'})
+        self.client.send(outgoing_event)

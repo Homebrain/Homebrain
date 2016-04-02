@@ -27,7 +27,7 @@ def listen_for_homebrain():
         msg = data.decode('UTF-8')
         if type(msg) is str:
             event = json.loads(msg)
-            if event["type"] == "broadcast":
+            if event["tag"] == "broadcast":
                 print("Homebrain server found!")
                 global remoteip, remoteport
                 remoteip    = event["data"]["ip"]

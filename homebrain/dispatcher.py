@@ -25,9 +25,14 @@ class Dispatcher(Agent):
         return self._bindings[selector]
 
     def process(self, msg):
-        agents = self._query_selector(msg["type"])
-        for agent in agents:
+        if msg["type"] == "unicast":
+            logging.warning("Unicast is not tested yet, proceed with caution!")
+            agent = AgentManager().get_agent(msg["agent"])
             agent.put_event(msg)
+        elif msg["type"] == "broadcast":
+            agents = self._query_selector(msg["tag"])
+            for agent in agents:
+                agent.put_event(msg)
 
     def chain(self, initial_trigger, *args):
         """Chains together a sequence of agents such that each one listens to the preceding one's event,
