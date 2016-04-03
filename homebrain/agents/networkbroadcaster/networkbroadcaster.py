@@ -13,9 +13,8 @@ class BroadcastAgent(Agent):
 
     autostart = True
 
-    def __init__(self, target=None):
+    def __init__(self):
         super(BroadcastAgent, self).__init__()
-        self.target = target if target is not None else self.identifier
 
         self.sock = socket(AF_INET, SOCK_DGRAM)
         self.sock.bind(('', 0))

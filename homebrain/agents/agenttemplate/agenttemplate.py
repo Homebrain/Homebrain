@@ -6,9 +6,8 @@ class AgentTemplate(Agent):
 
     autostart = False
 
-    def __init__(self, target=None):
+    def __init__(self):
         super(AgentTemplate, self).__init__()
-        self.target = target if target is not None else self.identifier
 
         # Only bind manually if you are an endpoint agent. Otherwise, use Dispatcher.chain at config time.
         #Dispatcher().bind(self, "exampletype1")
@@ -16,4 +15,4 @@ class AgentTemplate(Agent):
     @stop_on_shutdown_event
     def handle_event(self, event):
         # Handle incoming events
-        logging.log(event)
+        pass

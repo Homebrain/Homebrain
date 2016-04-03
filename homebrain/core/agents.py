@@ -21,8 +21,10 @@ class Agent(threading.Thread):
     nrAgents = 1  # Monotonically increasing count of agents created
 
     def __init__(self, event_timeout=0.2):
-        self.id = self.nrAgents
-        self.nrAgents += 1  # statically increase the number of agents created
+        self._name = None
+        self.id = Agent.nrAgents
+        #self.id = self.nrAgents
+        Agent.nrAgents += 1  # statically increase the number of agents created
 
         threading.Thread.__init__(self, name=self.identifier, daemon=True)
         self._mailbox = Queue()
@@ -30,6 +32,13 @@ class Agent(threading.Thread):
         self._enabled = False
         self._wait_for_event_timeout = event_timeout
         self._processed_events = 0
+
+    @property
+    def name(self) -> str:
+        if self._name == None:
+            return str(self.id)
+        else:
+            return self._name
 
     # TODO: Rename "identifier" to something less like the class attribute id
     @property

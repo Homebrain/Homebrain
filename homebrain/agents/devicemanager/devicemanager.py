@@ -12,7 +12,7 @@ class DeviceManager(Agent):
 
     autostart = True
 
-    def __init__(self, target=None):
+    def __init__(self):
         super(DeviceManager, self).__init__()
         self.target = target if target is not None else self.identifier
         Dispatcher().bind(self, "add_client")
@@ -39,7 +39,7 @@ class DeviceManager(Agent):
                     self.lampc += 1
                     lamphandler = LampHandler(client)
                     lampfilter = IDFilter(filterid)
-                    Dispatcher().chain("button", lampfilter, lamphandler)
+                    Dispatcher().chain("button", lampfilter, lamphandler, client)
                     logging.info("Added lamp for "+client.identifier)
 
                 elif tag == "tts":
@@ -47,7 +47,7 @@ class DeviceManager(Agent):
                     self.ttsc += 1
                     ttshandler = TTSHandler(client)
                     ttsfilter = IDFilter(filterid)
-                    Dispatcher().chain("button", ttsfilter, ttshandler)
+                    Dispatcher().chain("button", ttsfilter, ttshandler, client)
                     logging.info("Added tts for "+client.identifier)
                 
                 AgentManager().start_agents()

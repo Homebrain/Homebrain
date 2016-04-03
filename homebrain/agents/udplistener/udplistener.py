@@ -12,7 +12,6 @@ class UDPListener(Agent):
 
     def __init__(self, target=None):
         super(UDPListener, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.port = 5602
         self.bufsize = 4096
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

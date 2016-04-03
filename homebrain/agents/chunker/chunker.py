@@ -9,9 +9,8 @@ class Chunker(Agent):
 
     autostart = False
 
-    def __init__(self, count, target=None):
+    def __init__(self, count):
         super(Chunker, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.count = count
         self.events = []
 

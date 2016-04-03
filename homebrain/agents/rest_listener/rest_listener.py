@@ -20,7 +20,6 @@ class RestListener(Agent):
 
     def __init__(self):
         super(RestListener, self).__init__()
-        self.target = self.identifier
         self.dispatcher = Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 

@@ -12,10 +12,9 @@ class DeviceMonitor(Agent):
 
     autostart = True
 
-    def __init__(self, target=None, netmask=24):
+    def __init__(self, netmask=24):
         super(DeviceMonitor, self).__init__()
         # Initialize values
-        self.target = target if target is not None else self.identifier
         self.dispatcher = Dispatcher()
         self.threadpool = ThreadPool(5)
         self.updateinterval = 30

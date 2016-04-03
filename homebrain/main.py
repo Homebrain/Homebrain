@@ -5,8 +5,9 @@ from time import sleep
 import traceback
 import getpass
 
-from .dispatcher import Dispatcher
+from . import Dispatcher
 from . import AgentManager, ModuleManager
+from .api import WebSocket
 from .logging import setup_logging
 
 
@@ -36,6 +37,10 @@ def start():
 
     # Start the dispatcher
     Dispatcher().start()
+
+    # Start APIs
+    ws = WebSocket()
+    ws.start()
 
     # Start Loggers
     am.start_agents()

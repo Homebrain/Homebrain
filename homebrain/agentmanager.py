@@ -33,7 +33,7 @@ class AgentManager:
     def get_agent(self, identifier):
         # TODO: this is not optimal, should be redesigned
         foundagent = None
-        for agent in agents:
+        for agent in self.agents:
             if agent.id == identifier:
                 foundagent = agent
         return foundagent

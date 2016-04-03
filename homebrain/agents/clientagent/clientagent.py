@@ -1,16 +1,15 @@
-from homebrain import Agent, Event
+from homebrain import Agent, Event, AgentManager
 import logging
 import requests
-
+from homebrain.api import WebSocket
 
 class ClientAgent(Agent):
     """Listens to a trigger event, and sends a toggle command via REST to all registered lamps"""
 
     autostart = False
 
-    def __init__(self, name, ip, port, protocol, target=None):
+    def __init__(self, name, ip, port, protocol):
         super(ClientAgent, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.ip = ip
         self.port = port
         self.id = name
@@ -20,16 +19,7 @@ class ClientAgent(Agent):
         self.url = protocol + "://" + ip + ":" + port
 
     def handle_event(self, event):
-        if self.protocol == "ws":
-            pass
-        elif self.protocol == "http":
-            pass
-        
-        try:
-            requests.request("POST", self.lampurl,
-                             json=event.to_json())
-        except Exception as e:
-            logging.error("Unable to send event to client: \n" + str(e))
+        self.send(event)
 
     def send(self, event):
         if self.protocol == "http":
@@ -38,6 +28,7 @@ class ClientAgent(Agent):
             except Exception as e:
                 logging.error("Unable to send event to client:\n" + str(e))
         elif self.protocol == "ws":
-            logging.error("Ws not yet implemented for clientagent")
+            ws = WebSocket()
+            ws.send(self.ip, self.port, event)
         else:
             logging.error("Invalid protocol for client")

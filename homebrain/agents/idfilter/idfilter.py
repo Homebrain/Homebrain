@@ -6,13 +6,11 @@ class IDFilter(Agent):
 
     autostart = False
 
-    def __init__(self, ID, target=None):
+    def __init__(self, ID):
         Agent.__init__(self)
-        self.target = target if target is not None else self.identifier
         self.dispatcher = Dispatcher()
         self.id = ID
 
     def handle_event(self, event):
         if "id" in event and event["id"] == self.id:
-            outgoing_event = Event(tag=self.target, data=event["data"])
-            self.dispatcher.put_event(outgoing_event)
+            self.dispatcher.put_event(event)

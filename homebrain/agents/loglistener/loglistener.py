@@ -6,9 +6,8 @@ class LogListener(Agent):
 
     autostart = True
 
-    def __init__(self, target=None):
+    def __init__(self):
         super(LogListener, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.dispatcher = Dispatcher()
         self.unknown_logger = logging.getLogger("Unknown Client")
         Dispatcher().bind(self, "log")

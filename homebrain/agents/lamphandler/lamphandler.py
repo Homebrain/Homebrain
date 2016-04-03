@@ -1,4 +1,4 @@
-from homebrain import Agent, Event
+from homebrain import Agent, Event, Dispatcher
 import logging
 import requests
 
@@ -7,11 +7,11 @@ class LampHandler(Agent):
 
     autostart = False
 
-    def __init__(self, lamp, target=None):
+    def __init__(self, lamp):
         super(LampHandler, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.client = lamp
 
     def handle_event(self, event):
-        outgoing_event = Event(tag="lamp", data={'action': 'toggle'})
-        self.client.send(outgoing_event)
+        event["tag"] = "lamp"
+        event["data"] = {'action': 'toggle'}
+        Dispatcher().put_event(event)

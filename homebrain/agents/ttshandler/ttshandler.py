@@ -1,4 +1,4 @@
-from homebrain import Agent, Event
+from homebrain import Agent, Event, Dispatcher
 from homebrain.core.decorators import stop_on_shutdown_event, log_exceptions
 import logging
 import requests
@@ -8,11 +8,11 @@ class TTSHandler(Agent):
 
     autostart = False
 
-    def __init__(self, client, target=None):
+    def __init__(self, client):
         super(TTSHandler, self).__init__()
-        self.target = target if target is not None else self.identifier
         self.client = client
 
     def handle_event(self, event):
-        outgoing_event = Event(tag="tts", data={'msg': 'Button pressed'})
-        self.client.send(outgoing_event)
+        event["tag"] = "tts"
+        event["data"] = {'msg': 'Button pressed'}
+        Dispatcher().put_event(event)
