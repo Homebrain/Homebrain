@@ -35,20 +35,20 @@ class IntegrationTest(unittest.TestCase):
     def test_chain(self):
         # Test Chunker
         self.assertEquals([],self.output_agent.events)
-        Dispatcher().put_event(Event(type="button", data={}))
+        Dispatcher().put_event(Event(tag="button", data={}))
         self.assertEquals([],self.output_agent.events)
-        Dispatcher().put_event(Event(type="button", data={}))
-        Dispatcher().put_event(Event(type="button", data={}))
+        Dispatcher().put_event(Event(tag="button", data={}))
+        Dispatcher().put_event(Event(tag="button", data={}))
         time.sleep(0.1)
-        self.assertEqual(1, len(self.output_agent.events))
+        self.assertEqual(3, len(self.output_agent.events))
 
         # Test IDFilter
-        Dispatcher().put_event(Event(type="button", id="", data={}))
+        Dispatcher().put_event(Event(tag="button", id="", data={}))
         time.sleep(0.1)
-        self.assertEqual(1, len(self.output_agent.events))
-        Dispatcher().put_event(Event(type="button", id="idtest", data={}))
+        self.assertEqual(3, len(self.output_agent.events))
+        Dispatcher().put_event(Event(tag="button", id="idtest", data={}))
         time.sleep(0.1)
-        self.assertEqual(2, len(self.output_agent.events))
+        self.assertEqual(4, len(self.output_agent.events))
 
     def tearDown(self):
         AgentManager.reset_singleton()

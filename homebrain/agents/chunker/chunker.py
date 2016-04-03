@@ -20,9 +20,8 @@ class Chunker(Agent):
     def handle_event(self, event):
         self.events.append(event)
         if len(self.events) >= self.count:
-            Dispatcher().put_event(
-                Event(**{"tag": self.target,
-                         "data": self.events}))
+            for event in self.events:
+                Dispatcher().put_event(event)
             self.events = []
 
     def cleanup(self):
