@@ -7,7 +7,7 @@ import getpass
 
 from . import Dispatcher
 from . import AgentManager, ModuleManager
-from .api import WebSocket
+from .api import WebSocket, RestListener
 from .logging import setup_logging
 
 
@@ -41,6 +41,8 @@ def start():
     # Start APIs
     ws = WebSocket()
     ws.start()
+    rl = RestListener()
+    rl.start()
 
     # Start Loggers
     am.start_agents()

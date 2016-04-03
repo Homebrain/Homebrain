@@ -14,7 +14,6 @@ class DeviceManager(Agent):
 
     def __init__(self):
         super(DeviceManager, self).__init__()
-        self.target = target if target is not None else self.identifier
         Dispatcher().bind(self, "add_client")
         
         self.clientc = 0

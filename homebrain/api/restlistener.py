@@ -2,7 +2,7 @@
 import logging
 from homebrain import AgentManager, ModuleManager, Agent, Dispatcher
 from homebrain.utils import *
-from devicemonitor import DeviceMonitor
+import threading
 import flask
 from flask import Flask, Response, request, json, make_response
 
@@ -14,12 +14,11 @@ from flask import Flask, Response, request, json, make_response
 
 # TODO: Change to a better name
 
-class RestListener(Agent):
-
-    autostart = True
+class RestListener(threading.Thread):
 
     def __init__(self):
-        super(RestListener, self).__init__()
+        threading.Thread.__init__(self)
+        from devicemonitor import DeviceMonitor
         self.dispatcher = Dispatcher()
         self.app = Flask(__name__, static_url_path='', static_folder=get_cwd() + '/site')
 
@@ -101,18 +100,18 @@ class RestListener(Agent):
 
         @self.app.route('/api/v0/chains')
         def get_chains():
-            chains = {}
-            # Not the cleanest code for tree generation, but works
-            for agent in AgentManager().agents:
-                if agent.target != agent.identifier:
-                    links = agent.target.split('->')
-                    prelink = chains
-                    for link in range(len(links)):
-                        i = links[link]
-                        if not i in prelink:
-                            prelink[i] = {}
-                        prelink = prelink[i]
-            return json.dumps(chains)
+            chains = list(Dispatcher()._chains)
+            jchains = []
+            for chain in chains:
+                arr = []
+                print(chain)
+                for agent in chain:
+                    print(agent)
+                    arr.append(agent.identifier)
+                jchains.append(arr)
+            retval = {"chains":jchains}
+            print(retval)
+            return json.dumps(retval)
 
         """EVENT API"""
 

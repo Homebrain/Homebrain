@@ -157,28 +157,20 @@ app.controller("AgentsCtrl", function($scope, $resource, $routeParams) {
         $scope.agents = agents;
     })
     var Chains = $resource("/api/v0/chains");
-    Chains.get("", function(chains){
-        //console.log(chains)
-        chains = angular.fromJson(angular.toJson(chains));
-        strarr = []
-
-        // Traverse chain tree
-        traversed = []
-        function traverse(pos){
-            if ( Object.keys(pos).length === 0){
-                strarr.push(traversed.toString());
+    Chains.get("", function(data){
+        chains = data["chains"];
+        strarr = [];
+        for (ci in chains) {
+            chain = chains[ci]
+            string = "";
+            for (ai in chain){
+                agent = chain[ai]
+                string += agent + " -> ";
             }
-            else {
-                for (var key in pos){
-                    traversed.push(key);
-                    //console.log(traversed);
-                    traverse(pos[key]);
-                }
-            }
-            traversed.pop();
+            string = string.substring(0, string.length-4);
+            strarr.push(string);
         }
-        traverse(chains);
-        //console.log(strarr)
+        console.log(strarr)
         $scope.chains = strarr;
     })
     var Modules = $resource("/api/v0/modules");
